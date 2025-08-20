@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios, { type AxiosRequestConfig } from "axios";
 
-export function useAxios<T>(url: string, options?: any) {
+export function useAxios<T = any>(url: string, options?: AxiosRequestConfig) {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);

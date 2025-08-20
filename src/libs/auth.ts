@@ -12,8 +12,8 @@ export async function loginSpotify() {
 
   const args = new URLSearchParams({
     client_id: CLIENT_ID,
-    response_type: "code",
     redirect_uri: REDIRECT_URI,
+    response_type: "code",
     scope: SCOPES.join("%20"),
     code_challenge: codeChallenge,
     code_challenge_method: "S256",

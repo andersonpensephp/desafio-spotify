@@ -21,13 +21,13 @@ export default function Callback() {
       }
 
       try {
-        const body = {
+        const body = new URLSearchParams({
           client_id: CLIENT_ID,
           grant_type: "authorization_code",
           code,
           redirect_uri: REDIRECT_URI,
           code_verifier: codeVerifier!,
-        };
+        });
 
 
         const response = await axios.post("https://accounts.spotify.com/api/token", body, {
