@@ -54,6 +54,29 @@ O projeto está publicado no GitHub Pages:
 - GitHub Pages  
 
 ---
+## 📂 Estrutura do Projeto
+
+
+```bash
+src/
+├── assets/        # Arquivos estáticos (imagens, ícones, etc.)
+├── components/    # Componentes reutilizáveis
+│   ├── common/    # Componentes comuns (botões, inputs, etc.)
+│   └── ui/        # Componentes de UI estilizados
+├── context/       # Contextos do React
+├── hooks/         # Custom hooks
+├── libs/          # Bibliotecas e utilitários
+│   └── auth/      # Lógica de autenticação
+├── pages/         # Componentes de página
+│   ├── Artist/    # Página do artista
+│   ├── Artists/   # Página de busca de artistas
+│   ├── Album/     # Página do álbum
+│   └── Home/      # Página inicial
+├── styles/        # Estilos globais e temas
+└── utils/         # Funções utilitárias
+```
+
+---
 
 ## 🔧 Pré-requisitos
 
