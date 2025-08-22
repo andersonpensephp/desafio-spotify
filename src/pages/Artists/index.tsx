@@ -14,7 +14,7 @@ import { useDebounce } from '../../hooks/useDebounce';
 import ArtistsAlbumsListSkeleton from './Skeleton/ArtistsAlbumsListSkeleton';
 import { AlbumsItem } from './components/AlbumsItem/AlbumsItem';
 import { ArtistsItem } from './components/ArtistsItem/ArtistsItem';
-import type { Artist, SimplifiedAlbum, SimplifiedArtist } from '@/types/spotify';
+import type { Artist, SimplifiedAlbum } from '@/types/spotify';
 
 const limit = import.meta.env.VITE_LIMIT_PER_PAGE;
 
