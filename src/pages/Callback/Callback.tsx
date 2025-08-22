@@ -12,7 +12,11 @@ export default function Callback() {
   useEffect(() => {
 
     async function getToken() {
-      const code = new URLSearchParams(window.location.search).get("code");
+      const url = window.location.href;
+      // Pega o code tanto antes quanto depois do hash
+      const codeMatch = url.match(/code=([^&]+)/);
+      const code = codeMatch ? codeMatch[1] : null;
+
       const codeVerifier = localStorage.getItem("code_verifier");
 
       if (!code) {
