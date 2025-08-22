@@ -45,7 +45,7 @@ export const TracksListCard = ({ tracks }: TracksListCardProps) => {
                 <p>Album: {track.albumName}</p>
                 <h2 className="text-lg font-semibold">{track.name}</h2>
                 <p className="text-sm text-muted-foreground">
-                  {track.artists?.map((artist: any) => artist.name).join(', ')}
+                  {track.artists?.map((artist) => artist.name).join(', ')}
                 </p>
               </div>
               <div className="ml-auto text-sm text-gray-400 flex items-center gap-2">
