@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAxios } from "../../hooks/useAxios";
 import axios from "axios";
 
-const CLIENT_ID = "a5fedad960cb4b98979e050172253ea5";
-const REDIRECT_URI = "http://127.0.0.1:5173/callback";
+const CLIENT_ID = import.meta.env.VITE_CLIENT_ID || "";
+const REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI || "";
+const AUTH_URL = import.meta.env.VITE_SPOTIFY_AUTHORIZED || "";
 
 export default function Callback() {
   const navigate = useNavigate();
@@ -21,16 +21,16 @@ export default function Callback() {
       }
 
       try {
-        const body = {
+        const body = new URLSearchParams({
           client_id: CLIENT_ID,
           grant_type: "authorization_code",
           code,
           redirect_uri: REDIRECT_URI,
           code_verifier: codeVerifier!,
-        };
+        });
 
 
-        const response = await axios.post("https://accounts.spotify.com/api/token", body, {
+        const response = await axios.post(AUTH_URL + "/api/token", body, {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded"
           },
