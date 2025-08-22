@@ -10,7 +10,7 @@ function App() {
   return (
     <ErrorBoundary>
       <SearchContextProvider>
-        <BrowserRouter>
+        <BrowserRouter basename="/desafio-spotify">
           <QueryClientProvider client={queryClient}>
             <AppRoutes />
           </QueryClientProvider>
