@@ -1,10 +1,12 @@
-import { BrowserRouter } from 'react-router-dom'
-import AppRoutes from './routes'
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
-import { SearchContextProvider } from './context/SearchContext'
-import ErrorBoundary from './components/common/ErrorBoundary/ErrorBoundary'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-const queryClient = new QueryClient()
+import { BrowserRouter } from 'react-router-dom';
+
+import ErrorBoundary from './components/common/ErrorBoundary/ErrorBoundary';
+import { SearchContextProvider } from './context/SearchContext';
+import AppRoutes from './routes';
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
@@ -17,7 +19,7 @@ function App() {
         </BrowserRouter>
       </SearchContextProvider>
     </ErrorBoundary>
-  )
+  );
 }
 
-export default App
+export default App;

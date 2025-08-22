@@ -1,5 +1,5 @@
-import { Skeleton } from "@/components/ui/skeleton"
-import { Tabs, TabsList } from "@/components/ui/tabs"
+import { Skeleton } from '@/components/ui/skeleton';
+import { Tabs, TabsList } from '@/components/ui/tabs';
 
 export default function ArtistSkeleton() {
   return (
@@ -26,5 +26,5 @@ export default function ArtistSkeleton() {
         </Tabs>
       </div>
     </div>
-  )
+  );
 }

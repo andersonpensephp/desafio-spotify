@@ -12,9 +12,8 @@
 // You can read more here:
 // https://on.cypress.io/configuration
 // ***********************************************************
-
 // Import commands.js using ES2015 syntax:
-import './commands'
+import './commands';
 
 beforeEach(() => {
   cy.window().then((win) => {
@@ -27,6 +26,6 @@ beforeEach(() => {
       display_name: 'Usuário Teste',
       email: 'teste@teste.com',
       id: '123456',
-    }
+    },
   }).as('me');
 });

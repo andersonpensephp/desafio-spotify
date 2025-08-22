@@ -1,8 +1,8 @@
 describe('Home', () => {
   beforeEach(() => {
-    cy.mockSearchTypeArtistAPI()
-    cy.mockSearchTypeAlbumAPI()
-  })
+    cy.mockSearchTypeArtistAPI();
+    cy.mockSearchTypeAlbumAPI();
+  });
 
   it('should log in and redirect to the artists page', () => {
     cy.visit('/');

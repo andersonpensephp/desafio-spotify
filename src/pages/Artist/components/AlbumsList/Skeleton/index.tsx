@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton"
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function AlbumsListSkeleton() {
   return (
@@ -7,5 +7,5 @@ export default function AlbumsListSkeleton() {
         <Skeleton key={index} className="h-54 w-full rounded" />
       ))}
     </>
-  )
+  );
 }

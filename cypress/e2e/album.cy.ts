@@ -1,8 +1,7 @@
-
 describe('Album', () => {
   beforeEach(() => {
-    cy.mockAlbumsIdAPI()
-  })
+    cy.mockAlbumsIdAPI();
+  });
 
   it('should render the album page', () => {
     cy.visit('/album/1');

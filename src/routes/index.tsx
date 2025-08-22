@@ -1,11 +1,12 @@
-import { Route, Routes } from "react-router-dom"
-import Home from "../pages/Home"
-import Callback from "../pages/Callback/Callback"
-import Artists from "../pages/Artists"
-import Artist from "../pages/Artist"
-import DefaultLayout from "../layouts/DefaultLayout"
-import Album from "../pages/Album"
-import NotFound from "../pages/NotFound"
+import { Route, Routes } from 'react-router-dom';
+
+import DefaultLayout from '../layouts/DefaultLayout';
+import Album from '../pages/Album';
+import Artist from '../pages/Artist';
+import Artists from '../pages/Artists';
+import Callback from '../pages/Callback/Callback';
+import Home from '../pages/Home';
+import NotFound from '../pages/NotFound';
 
 export default function AppRoutes() {
   return (
@@ -19,5 +20,5 @@ export default function AppRoutes() {
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
-  )
+  );
 }

@@ -1,40 +1,27 @@
-import { useQuery } from "@tanstack/react-query";
-import { getArtists, getArtistAlbumsByQuery } from "../../api/spotify";
-import { Input } from "@/components/ui/input";
-import { useDebounce } from "../../hooks/useDebounce";
-import { motion } from "framer-motion";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
-import { SearchContext } from "../../context/SearchContext";
-import {
-  useCallback,
-  useContext,
-  useState,
-  useMemo,
-  useEffect,
-} from "react";
-import ArtistsAlbumsListSkeleton from "./Skeleton/ArtistsAlbumsListSkeleton";
-import { PaginationComponent } from "@/components/common/Pagination/Pagination";
-import { ArtistsItem } from "./components/ArtistsItem/ArtistsItem";
-import { AlbumsItem } from "./components/AlbumsItem/AlbumsItem";
-import { ErrorState } from "@/components/common/ErrorState/ErrorState";
+import { useQuery } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
+
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+
+import { ErrorState } from '@/components/common/ErrorState/ErrorState';
+import { PaginationComponent } from '@/components/common/Pagination/Pagination';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+import { getArtistAlbumsByQuery, getArtists } from '../../api/spotify';
+import { SearchContext } from '../../context/SearchContext';
+import { useDebounce } from '../../hooks/useDebounce';
+import ArtistsAlbumsListSkeleton from './Skeleton/ArtistsAlbumsListSkeleton';
+import { AlbumsItem } from './components/AlbumsItem/AlbumsItem';
+import { ArtistsItem } from './components/ArtistsItem/ArtistsItem';
 
 const limit = import.meta.env.VITE_LIMIT_PER_PAGE;
 
 const DEBOUNCE_DELAY = 600;
 
 export default function Artists() {
-  const {
-    search,
-    setSearch,
-    tab,
-    setTab
-  } = useContext(SearchContext)
-  const debounceSearch = useDebounce(search, DEBOUNCE_DELAY)
+  const { search, setSearch, tab, setTab } = useContext(SearchContext);
+  const debounceSearch = useDebounce(search, DEBOUNCE_DELAY);
 
   const [pageArtists, setPageArtists] = useState(0);
   const [pageAlbums, setPageAlbums] = useState(0);
@@ -46,7 +33,7 @@ export default function Artists() {
     error: artistsError,
     refetch: refetchArtists,
   } = useQuery({
-    queryKey: ["artists", debounceSearch, pageArtists],
+    queryKey: ['artists', debounceSearch, pageArtists],
     queryFn: () => getArtists<any>(debounceSearch, limit, pageArtists * limit),
     enabled: !!debounceSearch,
     refetchOnWindowFocus: false,
@@ -56,7 +43,7 @@ export default function Artists() {
     retry: 2,
     retryDelay: 1000,
     throwOnError: true,
-  })
+  });
 
   // Query de albuns
   const {
@@ -65,7 +52,7 @@ export default function Artists() {
     error: albumsError,
     refetch: refetchAlbums,
   } = useQuery({
-    queryKey: ["albums", debounceSearch, pageAlbums],
+    queryKey: ['albums', debounceSearch, pageAlbums],
     queryFn: () => getArtistAlbumsByQuery<any>(debounceSearch, limit, pageAlbums * limit),
     enabled: !!debounceSearch,
     refetchOnWindowFocus: false,
@@ -75,35 +62,38 @@ export default function Artists() {
     retry: 2,
     retryDelay: 1000,
     throwOnError: true,
-  })
+  });
 
-  const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setTimeout(() => {
-      setSearch(value)
-    }, 0)
-  }, [setSearch])
+  const handleSearch = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      setTimeout(() => {
+        setSearch(value);
+      }, 0);
+    },
+    [setSearch]
+  );
 
   const handleRetry = () => {
-    if (tab === "artists") {
-      refetchArtists()
+    if (tab === 'artists') {
+      refetchArtists();
     } else {
-      refetchAlbums()
+      refetchAlbums();
     }
-  }
+  };
 
   useEffect(() => {
-    setPageArtists(0)
-    setPageAlbums(0)
-  }, [debounceSearch])
+    setPageArtists(0);
+    setPageAlbums(0);
+  }, [debounceSearch]);
 
   useEffect(() => {
-    if (tab === "artists") {
-      setPageArtists(0)
+    if (tab === 'artists') {
+      setPageArtists(0);
     } else {
-      setPageAlbums(0)
+      setPageAlbums(0);
     }
-  }, [tab])
+  }, [tab]);
 
   const totalArtists = artistsData?.artists.total ?? 0;
   const totalArtistsPages = useMemo(() => Math.ceil(totalArtists / limit), [totalArtists]);
@@ -117,7 +107,7 @@ export default function Artists() {
         <div className="w-full max-w-md">
           <Input
             type="text"
-            placeholder={`Buscar ${tab === "artists" ? "artistas" : "albuns"}`}
+            placeholder={`Buscar ${tab === 'artists' ? 'artistas' : 'albuns'}`}
             value={search}
             onChange={handleSearch}
           />
@@ -127,13 +117,17 @@ export default function Artists() {
       <Tabs
         defaultValue={tab}
         onValueChange={(value) => {
-          setTab(value)
+          setTab(value);
         }}
       >
         <div className="flex items-center gap-6 mb-6">
           <TabsList>
-            <TabsTrigger className="cursor-pointer" value="artists">Artistas</TabsTrigger>
-            <TabsTrigger className="cursor-pointer" value="albums">Albuns</TabsTrigger>
+            <TabsTrigger className="cursor-pointer" value="artists">
+              Artistas
+            </TabsTrigger>
+            <TabsTrigger className="cursor-pointer" value="albums">
+              Albuns
+            </TabsTrigger>
           </TabsList>
         </div>
 
@@ -142,12 +136,14 @@ export default function Artists() {
           <h2 className="text-2xl font-bold pb-4">Artistas</h2>
           {artistsError && (
             <ErrorState
-              message={artistsError?.message || "Erro ao buscar artistas"}
+              message={artistsError?.message || 'Erro ao buscar artistas'}
               onRetry={handleRetry}
             />
           )}
           <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full justify-between">
-            {isArtistsFetching ? <ArtistsAlbumsListSkeleton /> : (
+            {isArtistsFetching ? (
+              <ArtistsAlbumsListSkeleton />
+            ) : (
               artistsData?.artists.items?.map((artist: any) => (
                 <motion.div
                   key={artist.id}
@@ -158,7 +154,8 @@ export default function Artists() {
                 >
                   <ArtistsItem artist={artist} />
                 </motion.div>
-              )))}
+              ))
+            )}
           </ul>
 
           {totalArtistsPages > 1 && (
@@ -175,12 +172,14 @@ export default function Artists() {
           <h2 className="text-2xl font-bold pb-4">Albuns</h2>
           {albumsError && (
             <ErrorState
-              message={albumsError?.message || "Erro ao buscar albuns"}
+              message={albumsError?.message || 'Erro ao buscar albuns'}
               onRetry={handleRetry}
             />
           )}
           <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full justify-between">
-            {isAlbumsFetching ? <ArtistsAlbumsListSkeleton /> : (
+            {isAlbumsFetching ? (
+              <ArtistsAlbumsListSkeleton />
+            ) : (
               albumsData?.albums.items?.map((album: any) => (
                 <motion.div
                   key={album.id}
@@ -191,7 +190,8 @@ export default function Artists() {
                 >
                   <AlbumsItem album={album} />
                 </motion.div>
-              )))}
+              ))
+            )}
           </ul>
 
           {totalAlbumsPages > 1 && (
@@ -204,5 +204,5 @@ export default function Artists() {
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }

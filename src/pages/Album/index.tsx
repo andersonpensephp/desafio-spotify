@@ -1,3 +1,12 @@
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+
+import { getAlbumById } from '@/api/spotify';
+import { ErrorState } from '@/components/common/ErrorState/ErrorState';
+import { TracksListCard } from '@/components/common/TracksListCard/TracksListCard';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -5,37 +14,28 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { useNavigate } from "react-router-dom"
-import { useContext } from "react"
-import { SearchContext } from "@/context/SearchContext"
-import { formatDate } from "@/utils/date"
-import { getAlbumById } from "@/api/spotify"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { useParams } from "react-router-dom"
-import { TracksListCard } from "@/components/common/TracksListCard/TracksListCard"
+} from '@/components/ui/breadcrumb';
+import { SearchContext } from '@/context/SearchContext';
+import { formatDate } from '@/utils/date';
 
-import AlbumSkeleton from "./Skeleton/AlbumSkeleton"
-import { ErrorState } from "@/components/common/ErrorState/ErrorState"
+import AlbumSkeleton from './Skeleton/AlbumSkeleton';
 
 export default function Album() {
   const { id } = useParams<{ id: string }>();
-  const {
-    search,
-  } = useContext(SearchContext)
-  const navigate = useNavigate()
+  const { search } = useContext(SearchContext);
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const {
     data: albumData,
     isLoading: albumLoading,
     error: albumError,
-    refetch: refetchAlbum
+    refetch: refetchAlbum,
   } = useQuery({
-    queryKey: ["albums", id],
+    queryKey: ['albums', id],
     queryFn: () => getAlbumById<any>(id!),
     initialData: () => {
-      const cachedAlbums = queryClient.getQueryData<any>(["albums", search]);
+      const cachedAlbums = queryClient.getQueryData<any>(['albums', search]);
       return cachedAlbums?.albums?.items.find((a: any) => a.id === id) || undefined;
     },
     refetchOnWindowFocus: false,
@@ -45,7 +45,7 @@ export default function Album() {
     retry: 2,
     retryDelay: 1000,
     throwOnError: true,
-  })
+  });
 
   const tracks = albumData?.tracks.items.map((track: any) => ({
     id: track.id,
@@ -54,14 +54,16 @@ export default function Album() {
     albumImage: albumData?.images[0].url,
     artists: track.artists,
     duration_ms: track.duration_ms,
-  }))
+  }));
 
   return (
     <div className="p-6">
       <Breadcrumb className="mb-6">
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink className="cursor-pointer" onClick={() => navigate("/artists")}>Artistas</BreadcrumbLink>
+            <BreadcrumbLink className="cursor-pointer" onClick={() => navigate('/artists')}>
+              Artistas
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
@@ -70,9 +72,11 @@ export default function Album() {
         </BreadcrumbList>
       </Breadcrumb>
 
-      {albumLoading ? <AlbumSkeleton /> : albumError ? (
+      {albumLoading ? (
+        <AlbumSkeleton />
+      ) : albumError ? (
         <ErrorState
-          message={albumError?.message || "Erro ao buscar album"}
+          message={albumError?.message || 'Erro ao buscar album'}
           onRetry={refetchAlbum}
         />
       ) : (
@@ -85,7 +89,7 @@ export default function Album() {
           />
           <div>
             <h1 className="text-3xl font-bold mb-2">{albumData?.name}</h1>
-            <p className="text-gray-500">{formatDate(albumData?.release_date, "dd/MM/yyyy")}</p>
+            <p className="text-gray-500">{formatDate(albumData?.release_date, 'dd/MM/yyyy')}</p>
           </div>
           <div className="mt-6">
             <h2 className="text-2xl font-bold mb-4"> {albumData?.total_tracks} faixas</h2>
@@ -94,5 +98,5 @@ export default function Album() {
         </>
       )}
     </div>
-  )
+  );
 }

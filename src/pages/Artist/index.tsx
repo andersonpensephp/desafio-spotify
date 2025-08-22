@@ -1,7 +1,15 @@
-import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { getArtist, getArtistTopTracks } from "@/api/spotify";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useQuery } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
+
+import { useCallback, useState } from 'react';
+import { useContext } from 'react';
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
+import { getArtist, getArtistTopTracks } from '@/api/spotify';
+import { ErrorState } from '@/components/common/ErrorState/ErrorState';
+import { TracksListCard } from '@/components/common/TracksListCard/TracksListCard';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,25 +17,20 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import AlbumsList from "./components/AlbumsList/AlbumsList";
-import { useCallback, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
-import { useContext } from "react";
-import { SearchContext } from "@/context/SearchContext";
-import ArtistSkeleton from "./Skeleton/ArtistSkeleton";
-import { TracksListCard } from "@/components/common/TracksListCard/TracksListCard";
-import { ErrorState } from "@/components/common/ErrorState/ErrorState";
-import { motion } from "framer-motion";
+} from '@/components/ui/breadcrumb';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { SearchContext } from '@/context/SearchContext';
+
+import ArtistSkeleton from './Skeleton/ArtistSkeleton';
+import AlbumsList from './components/AlbumsList/AlbumsList';
 
 export default function Artist() {
   const { id } = useParams<{ id: string }>();
-  const [tab, setTab] = useState("albums");
-  const { search } = useContext(SearchContext)
+  const [tab, setTab] = useState('albums');
+  const { search } = useContext(SearchContext);
   const queryClient = useQueryClient();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const {
     data: artist,
@@ -35,10 +38,10 @@ export default function Artist() {
     error: artistError,
     refetch: refetchArtist,
   } = useQuery({
-    queryKey: ["artists", id],
+    queryKey: ['artists', id],
     queryFn: () => getArtist<any>(id!),
     initialData: () => {
-      const cachedArtists = queryClient.getQueryData<any>(["artists", search]);
+      const cachedArtists = queryClient.getQueryData<any>(['artists', search]);
       return cachedArtists?.artists?.items.find((a: any) => a.id === id) || undefined;
     },
     refetchOnWindowFocus: false,
@@ -53,10 +56,10 @@ export default function Artist() {
   const {
     data: tracks,
     error: tracksError,
-    refetch: refetchTracks
+    refetch: refetchTracks,
   } = useQuery({
-    queryKey: ["tracks", id],
-    queryFn: () => getArtistTopTracks<any>(id!, "BR"),
+    queryKey: ['tracks', id],
+    queryFn: () => getArtistTopTracks<any>(id!, 'BR'),
     refetchOnWindowFocus: false,
     refetchOnMount: true,
     staleTime: 10 * 60 * 1000,
@@ -67,9 +70,9 @@ export default function Artist() {
   });
 
   const handleRetry = useCallback(() => {
-    refetchArtist()
-    refetchTracks()
-  }, [tab, refetchArtist, refetchTracks])
+    refetchArtist();
+    refetchTracks();
+  }, [tab, refetchArtist, refetchTracks]);
 
   const tracksList = tracks?.tracks.map((track: any) => ({
     id: track.id,
@@ -78,14 +81,16 @@ export default function Artist() {
     albumImage: track.album.images[0].url,
     artists: track.artists,
     duration_ms: track.duration_ms,
-  }))
+  }));
 
   return (
     <div className="p-6">
       <Breadcrumb className="mb-6">
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink className="cursor-pointer" onClick={() => navigate("/artists")}>Artistas</BreadcrumbLink>
+            <BreadcrumbLink className="cursor-pointer" onClick={() => navigate('/artists')}>
+              Artistas
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
@@ -93,9 +98,11 @@ export default function Artist() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      {artistLoading ? <ArtistSkeleton /> : (artistError || tracksError) ? (
+      {artistLoading ? (
+        <ArtistSkeleton />
+      ) : artistError || tracksError ? (
         <ErrorState
-          message={artistError?.message || "Erro ao buscar artista"}
+          message={artistError?.message || 'Erro ao buscar artista'}
           onRetry={handleRetry}
         />
       ) : (
@@ -120,8 +127,8 @@ export default function Artist() {
           <Tabs
             defaultValue={tab}
             onValueChange={(value) => {
-              setTab(value)
-              navigate(`/artist/${id}`)
+              setTab(value);
+              navigate(`/artist/${id}`);
             }}
           >
             <div className="flex items-center gap-6 mb-6">

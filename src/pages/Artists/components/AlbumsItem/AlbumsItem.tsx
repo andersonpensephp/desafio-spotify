@@ -1,15 +1,16 @@
-import { useNavigate } from "react-router-dom"
-import { memo } from "react"
-import { Card, CardContent } from "@/components/ui/card"
+import { memo } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { Card, CardContent } from '@/components/ui/card';
 
 export const AlbumsItem = memo(({ album }: { album: any }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <li>
       <Card
         className="w-full h-64 shadow-md hover:shadow-xl transition-shadow cursor-pointer"
         onClick={() => {
-          navigate(`/album/${album.id}`)
+          navigate(`/album/${album.id}`);
         }}
       >
         <CardContent className="flex flex-col items-center p-4 gap-2">
@@ -22,5 +23,5 @@ export const AlbumsItem = memo(({ album }: { album: any }) => {
         </CardContent>
       </Card>
     </li>
-  )
-})
+  );
+});

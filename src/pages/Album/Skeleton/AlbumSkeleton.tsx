@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton"
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function AlbumSkeleton() {
   return (
@@ -9,9 +9,9 @@ export default function AlbumSkeleton() {
       {/* Informações do álbum */}
       <div className="space-y-2">
         <Skeleton className="w-1/2 h-8 rounded" /> {/* Nome do álbum */}
-        <Skeleton className="w-32 h-4 rounded" />   {/* Data de lançamento */}
-        <Skeleton className="w-24 h-4 rounded" />   {/* Número de faixas */}
+        <Skeleton className="w-32 h-4 rounded" /> {/* Data de lançamento */}
+        <Skeleton className="w-24 h-4 rounded" /> {/* Número de faixas */}
       </div>
     </div>
-  )
+  );
 }

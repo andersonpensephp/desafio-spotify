@@ -48,7 +48,7 @@ Cypress.Commands.add('mockSearchTypeArtistAPI', () => {
       },
     },
   }).as('searchArtists');
-})
+});
 
 Cypress.Commands.add('mockSearchTypeAlbumAPI', () => {
   cy.intercept('GET', '**/search?q=Eminem&type=album*', {
@@ -62,7 +62,7 @@ Cypress.Commands.add('mockSearchTypeAlbumAPI', () => {
       },
     },
   }).as('searchAlbums');
-})
+});
 
 Cypress.Commands.add('mockArtistsIdAPI', () => {
   cy.intercept('GET', '**/artists/1', {
@@ -70,9 +70,9 @@ Cypress.Commands.add('mockArtistsIdAPI', () => {
     body: {
       name: 'Artist One',
       images: [{ url: 'img1.jpg' }],
-    }
-  })
-})
+    },
+  });
+});
 
 Cypress.Commands.add('mockArtistsIdTopTracksAPI', () => {
   cy.intercept('GET', '**/artists/1/top-tracks?*', {
@@ -101,8 +101,8 @@ Cypress.Commands.add('mockArtistsIdTopTracksAPI', () => {
         },
       ],
     },
-  })
-})
+  });
+});
 
 Cypress.Commands.add('mockArtistsIdAlbumsAPI', () => {
   cy.intercept('GET', '**/artists/1/albums?*', {
@@ -122,9 +122,9 @@ Cypress.Commands.add('mockArtistsIdAlbumsAPI', () => {
           total_tracks: 10,
         },
       ],
-    }
-  })
-})
+    },
+  });
+});
 
 Cypress.Commands.add('mockAlbumsIdAPI', () => {
   cy.intercept('GET', '**/albums/1', {
@@ -158,9 +158,6 @@ Cypress.Commands.add('mockAlbumsIdAPI', () => {
       },
       release_date: '2021-01-20',
       total_tracks: 2,
-    }
-  })
-})
-
-
-
+    },
+  });
+});

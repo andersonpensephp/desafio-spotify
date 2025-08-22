@@ -1,5 +1,6 @@
-import { WarningCircleIcon } from "@phosphor-icons/react";
-import { Button } from "@/components/ui/button";
+import { WarningCircleIcon } from '@phosphor-icons/react';
+
+import { Button } from '@/components/ui/button';
 
 export default function ErrorFallback() {
   return (
