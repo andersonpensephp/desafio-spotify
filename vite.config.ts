@@ -16,6 +16,7 @@ export default defineConfig(({ mode }) => {
       react(),
       tailwindcss()
     ],
+    base: "/desafio-spotify/",
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "src"),
