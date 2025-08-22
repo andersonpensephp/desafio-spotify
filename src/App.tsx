@@ -1,4 +1,4 @@
-import { BrowserRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 import AppRoutes from './routes'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { SearchContextProvider } from './context/SearchContext'
@@ -10,11 +10,11 @@ function App() {
   return (
     <ErrorBoundary>
       <SearchContextProvider>
-        <BrowserRouter basename="/desafio-spotify">
+        <HashRouter>
           <QueryClientProvider client={queryClient}>
             <AppRoutes />
           </QueryClientProvider>
-        </BrowserRouter>
+        </HashRouter>
       </SearchContextProvider>
     </ErrorBoundary>
   )
