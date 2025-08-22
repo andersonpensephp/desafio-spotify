@@ -1,8 +1,8 @@
 # Desafio Spotify 🎵
 
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green?logo=node.js)](https://nodejs.org/)
-[![React](https://img.shields.io/badge/React-19-blue?logo=react)](https://reactjs.org/)
-[![Vite](https://img.shields.io/badge/Vite-4.0-yellow?logo=vite)](https://vitejs.dev/)
+[![React](https://img.shields.io/badge/React-18-blue?logo=react)](https://reactjs.org/)
+[![Vite](https://img.shields.io/badge/Vite-4-yellow?logo=vite)](https://vitejs.dev/)
 [![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
 
 > Aplicação web que consome a API do Spotify para exibir informações sobre artistas, álbuns e músicas.
@@ -12,7 +12,7 @@
 ## 🌐 Demo
 
 O projeto está publicado no GitHub Pages:  
-[https://SEU_USUARIO.github.io/meu-projeto/](https://SEU_USUARIO.github.io/meu-projeto/)
+[https://andersonpensephp.github.io/desafio-spotify/](https://andersonpensephp.github.io/desafio-spotify/)
 
 ---
 
@@ -22,7 +22,7 @@ O projeto está publicado no GitHub Pages:
 - 📱 Layout responsivo para mobile e desktop  
 - 🎨 Interface moderna e intuitiva  
 - 🔄 Gerenciamento de estado com **React Query**  
-- 🔒 Autenticação com **OAuth 2.0 do Spotify**  
+- 🔒 Autenticação com **OAuth 2.0 do Spotify (PKCE)**  
 - 🎨 Animações suaves com **Framer Motion**  
 
 ---
@@ -31,7 +31,7 @@ O projeto está publicado no GitHub Pages:
 
 **Frontend:**
 
-- React 19  
+- React 18  
 - TypeScript  
 - Vite  
 - TailwindCSS  
@@ -83,25 +83,33 @@ yarn dev
 # Abra no navegador
 http://localhost:5173
 
----
+```
 
-Testes
+🧪 Testes
 
 ```bash
 npm run test
 # ou
 yarn test
-
-Deploy
+```
+🚀 Deploy
 
 ```bash
+npm run build
 npm run deploy
 # ou
+yarn build
 yarn deploy
-
-Licença
+```
+📄 Licença
 
 Este projeto está sob a licença MIT.
 Veja o arquivo LICENSE para mais detalhes.
 
-Desenvolvido por [Anderson Reis](https://github.com/andersonpensephp) - LinkedIn [https://www.linkedin.com/in/andersonfront/](https://www.linkedin.com/in/andersonfront/)
+👤 Autor
+
+Anderson Reis
+
+[Linkedin](https://www.linkedin.com/in/andersonfront/)
+
+
