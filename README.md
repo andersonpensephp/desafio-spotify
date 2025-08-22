@@ -114,6 +114,9 @@ npm install
 # ou
 yarn
 
+# Crie na raiz do projeto, para adicionar as envs
+.env
+
 # Inicie o servidor de desenvolvimento
 npm run dev
 # ou
