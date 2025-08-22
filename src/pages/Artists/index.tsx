@@ -14,7 +14,7 @@ import { useDebounce } from '../../hooks/useDebounce';
 import ArtistsAlbumsListSkeleton from './Skeleton/ArtistsAlbumsListSkeleton';
 import { AlbumsItem } from './components/AlbumsItem/AlbumsItem';
 import { ArtistsItem } from './components/ArtistsItem/ArtistsItem';
-import type { SimplifiedAlbum, SimplifiedArtist } from '@/types/spotify';
+import type { Artist, SimplifiedAlbum, SimplifiedArtist } from '@/types/spotify';
 
 const limit = import.meta.env.VITE_LIMIT_PER_PAGE;
 
@@ -145,7 +145,7 @@ export default function Artists() {
             {isArtistsFetching ? (
               <ArtistsAlbumsListSkeleton />
             ) : (
-              artistsData?.artists?.items?.map((artist: SimplifiedArtist) => (
+              artistsData?.artists?.items?.map((artist: Artist) => (
                 <motion.div
                   key={artist.id}
                   initial={{ opacity: 0, y: 20 }}

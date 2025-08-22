@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Card, CardContent } from '@/components/ui/card';
 import type { SimplifiedAlbum } from '@/types/spotify';
+import { formatDate } from '@/utils/date';
 
 interface AlbumsItemProps {
   album: SimplifiedAlbum;
@@ -25,6 +26,7 @@ export const AlbumsItem = memo(({ album }: AlbumsItemProps) => {
             className="w-24 h-24 rounded-full object-cover"
           />
           <h3 className="text-lg font-semibold">{album.name}</h3>
+          <p className="text-gray-500">Lançamento: {formatDate(album.release_date, 'dd/MM/yyyy')}</p>
         </CardContent>
       </Card>
     </li>

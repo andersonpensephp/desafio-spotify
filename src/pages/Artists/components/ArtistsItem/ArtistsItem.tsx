@@ -2,10 +2,10 @@ import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Card, CardContent } from '@/components/ui/card';
-import type { SimplifiedArtist } from '@/types/spotify';
+import type { Artist } from '@/types/spotify';
 
 interface ArtistsItemProps {
-  artist: SimplifiedArtist;
+  artist: Artist;
 }
 
 export const ArtistsItem = memo(({ artist }: ArtistsItemProps) => {
@@ -25,6 +25,7 @@ export const ArtistsItem = memo(({ artist }: ArtistsItemProps) => {
             className="w-24 h-24 rounded-full object-cover"
           />
           <h3 className="text-lg font-semibold">{artist.name}</h3>
+          <p className="text-gray-500">{artist.followers.total} seguidores</p>
         </CardContent>
       </Card>
     </li>
