@@ -2,8 +2,13 @@ import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Card, CardContent } from '@/components/ui/card';
+import type { SimplifiedArtist } from '@/types/spotify';
 
-export const ArtistsItem = memo(({ artist }: { artist: any }) => {
+interface ArtistsItemProps {
+  artist: SimplifiedArtist;
+}
+
+export const ArtistsItem = memo(({ artist }: ArtistsItemProps) => {
   const navigate = useNavigate();
   return (
     <li>

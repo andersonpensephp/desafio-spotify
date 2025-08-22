@@ -2,8 +2,13 @@ import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Card, CardContent } from '@/components/ui/card';
+import type { SimplifiedAlbum } from '@/types/spotify';
 
-export const AlbumsItem = memo(({ album }: { album: any }) => {
+interface AlbumsItemProps {
+  album: SimplifiedAlbum;
+}
+
+export const AlbumsItem = memo(({ album }: AlbumsItemProps) => {
   const navigate = useNavigate();
   return (
     <li>

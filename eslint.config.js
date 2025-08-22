@@ -28,6 +28,7 @@ export default tseslint.config([
       'vercel.json',
       'vitest.setup.ts',
       'src/components/ui/**/*',
+      'src/types/spotify.d.ts',
     ],
   },
 ]);
