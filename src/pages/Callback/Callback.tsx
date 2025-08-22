@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAxios } from "../../hooks/useAxios";
 import axios from "axios";
 
 const CLIENT_ID = "a5fedad960cb4b98979e050172253ea5";

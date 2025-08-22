@@ -1,8 +1,12 @@
-import { generateRandomString, generateCodeChallenge } from "../utils/pkce";
+import {
+  generateRandomString,
+  generateCodeChallenge
+} from "../utils/pkce";
 
-const CLIENT_ID = "a5fedad960cb4b98979e050172253ea5";
-const REDIRECT_URI = "http://127.0.0.1:5173/callback";
+const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID || "";
+const REDIRECT_URI = import.meta.env.VITE_SPOTIFY_REDIRECT_URI || "";
 const SCOPES = ["user-read-email", "user-read-private"];
+const AUTH_URL = import.meta.env.VITE_SPOTIFY_AUTH_URL || "";
 
 export async function loginSpotify() {
   const codeVerifier = generateRandomString(128);
@@ -19,7 +23,7 @@ export async function loginSpotify() {
     code_challenge_method: "S256",
   });
 
-  const authUrl = `https://accounts.spotify.com/authorize?${args.toString()}`;
+  const authUrl = `${AUTH_URL}?${args.toString()}`;
 
   window.location.href = authUrl;
 }

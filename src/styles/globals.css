@@ -114,7 +114,13 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Padding-top para não sobrepor o header fixo */
+body {
+  padding-top: 70px;
 }
