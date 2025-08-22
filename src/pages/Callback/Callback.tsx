@@ -1,52 +1,50 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from 'axios';
 
-const CLIENT_ID = import.meta.env.VITE_CLIENT_ID || "";
-const REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI || "";
-const AUTH_URL = import.meta.env.VITE_SPOTIFY_AUTHORIZED || "";
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+const CLIENT_ID = import.meta.env.VITE_CLIENT_ID || '';
+const REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI || '';
+const AUTH_URL = import.meta.env.VITE_SPOTIFY_AUTHORIZED || '';
 
 export default function Callback() {
   const navigate = useNavigate();
 
   useEffect(() => {
-
     async function getToken() {
-      const code = new URLSearchParams(window.location.search).get("code");
-      const codeVerifier = localStorage.getItem("code_verifier");
+      const code = new URLSearchParams(window.location.search).get('code');
+      const codeVerifier = localStorage.getItem('code_verifier');
 
       if (!code) {
-        console.log("Nenhum código encontrado");
+        console.log('Nenhum código encontrado');
         return;
       }
 
       try {
         const body = new URLSearchParams({
           client_id: CLIENT_ID,
-          grant_type: "authorization_code",
+          grant_type: 'authorization_code',
           code,
           redirect_uri: REDIRECT_URI,
           code_verifier: codeVerifier!,
         });
 
-
-        const response = await axios.post(AUTH_URL + "/api/token", body, {
+        const response = await axios.post(AUTH_URL + '/api/token', body, {
           headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
+            'Content-Type': 'application/x-www-form-urlencoded',
           },
         });
 
         const data = response.data;
 
         if (data) {
-          localStorage.setItem("access_token", data?.access_token);
-          localStorage.setItem("spotify_refresh", data.refresh_token);
+          localStorage.setItem('access_token', data?.access_token);
+          localStorage.setItem('spotify_refresh', data.refresh_token);
 
-          navigate("/artists");
+          navigate('/artists');
         } else {
-          console.log("Nenhum token encontrado");
+          console.log('Nenhum token encontrado');
         }
-
       } catch (error) {
         console.log(error);
       }

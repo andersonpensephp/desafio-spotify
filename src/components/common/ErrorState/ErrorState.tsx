@@ -1,5 +1,6 @@
-import { WarningCircleIcon } from "@phosphor-icons/react"
-import { Button } from "@/components/ui/button"
+import { WarningCircleIcon } from '@phosphor-icons/react';
+
+import { Button } from '@/components/ui/button';
 
 interface ErrorStateProps {
   message: string;
@@ -15,8 +16,10 @@ export const ErrorState = ({ message, onRetry }: ErrorStateProps) => {
         <p>{message}</p>
       </div>
       {onRetry && (
-        <Button onClick={onRetry} className="mt-4">Tentar novamente</Button>
+        <Button onClick={onRetry} className="mt-4">
+          Tentar novamente
+        </Button>
       )}
     </div>
-  )
-}
+  );
+};

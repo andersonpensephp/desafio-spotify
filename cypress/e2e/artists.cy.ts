@@ -1,8 +1,8 @@
 describe('Artists', () => {
   beforeEach(() => {
-    cy.mockSearchTypeArtistAPI()
-    cy.mockSearchTypeAlbumAPI()
-  })
+    cy.mockSearchTypeArtistAPI();
+    cy.mockSearchTypeAlbumAPI();
+  });
 
   it('should render the artists page', () => {
     cy.visit('/artists');

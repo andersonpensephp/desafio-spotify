@@ -1,16 +1,18 @@
-import { loginSpotify } from "../../libs/auth";
-import { Button } from "../../components/ui/button";
-import { SpotifyLogoIcon } from "@phosphor-icons/react"
-import { useNavigate } from "react-router-dom"
-import { useEffect } from "react"
+import { SpotifyLogoIcon } from '@phosphor-icons/react';
+
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { Button } from '../../components/ui/button';
+import { loginSpotify } from '../../libs/auth';
 
 export default function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("access_token");
+    const token = localStorage.getItem('access_token');
     if (token) {
-      navigate("/artists");
+      navigate('/artists');
     }
   }, [navigate]);
 
@@ -20,5 +22,5 @@ export default function Home() {
       <h1 className="text-3xl font-bold mb-4">Login</h1>
       <Button onClick={loginSpotify}>Entrar com Spotify</Button>
     </div>
-  )
+  );
 }

@@ -3,9 +3,9 @@ import {
   PaginationContent,
   PaginationItem,
   PaginationLink,
-  PaginationPrevious,
   PaginationNext,
-} from "@/components/ui/pagination";
+  PaginationPrevious,
+} from '@/components/ui/pagination';
 
 interface PaginationProps {
   totalPages: number;
@@ -18,7 +18,7 @@ export const PaginationComponent = ({
   totalPages,
   page,
   setPage,
-  maxVisiblePages = 5
+  maxVisiblePages = 5,
 }: PaginationProps) => {
   if (totalPages <= 1) return null;
 
@@ -37,21 +37,19 @@ export const PaginationComponent = ({
           {Array.from({ length: Math.min(maxVisiblePages, totalPages) })
             // .slice(page, page + maxVisiblePages)
             .map((_, index) => {
-              let pageIndex = Math.max(0, Math.min(
-                totalPages - maxVisiblePages,
-                Math.floor(page - maxVisiblePages / 2)
-              )) + index;
+              let pageIndex =
+                Math.max(
+                  0,
+                  Math.min(totalPages - maxVisiblePages, Math.floor(page - maxVisiblePages / 2))
+                ) + index;
               pageIndex = Math.min(pageIndex, totalPages - 1);
               return (
                 <PaginationItem key={pageIndex}>
-                  <PaginationLink
-                    onClick={() => setPage(pageIndex)}
-                    isActive={page === pageIndex}
-                  >
+                  <PaginationLink onClick={() => setPage(pageIndex)} isActive={page === pageIndex}>
                     {pageIndex + 1}
                   </PaginationLink>
                 </PaginationItem>
-              )
+              );
             })}
           <PaginationItem>
             <button disabled={page >= totalPages - 1}>
@@ -64,5 +62,5 @@ export const PaginationComponent = ({
         </PaginationContent>
       </Pagination>
     </div>
-  )
-}
+  );
+};

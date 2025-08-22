@@ -1,9 +1,9 @@
 describe('Artist', () => {
   beforeEach(() => {
-    cy.mockArtistsIdAPI()
-    cy.mockArtistsIdTopTracksAPI()
-    cy.mockArtistsIdAlbumsAPI()
-  })
+    cy.mockArtistsIdAPI();
+    cy.mockArtistsIdTopTracksAPI();
+    cy.mockArtistsIdAlbumsAPI();
+  });
 
   it('should render the artist page', () => {
     cy.visit('/artist/1');

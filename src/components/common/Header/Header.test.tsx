@@ -1,11 +1,12 @@
-import { render } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
-import { Header } from "./";
+import { render } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
 
-describe("Header", () => {
-  it("should render the header", () => {
+import { Header } from './';
+
+describe('Header', () => {
+  it('should render the header', () => {
     const { getByText } = render(<Header />);
-    const header = getByText("Spotify API");
+    const header = getByText('Spotify API');
     expect(header).toBeTruthy();
   });
 });
