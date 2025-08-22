@@ -19,6 +19,7 @@ import { SearchContext } from "@/context/SearchContext";
 import ArtistSkeleton from "./Skeleton/ArtistSkeleton";
 import { TracksListCard } from "@/components/common/TracksListCard/TracksListCard";
 import { ErrorState } from "@/components/common/ErrorState/ErrorState";
+import { motion } from "framer-motion";
 
 export default function Artist() {
   const { id } = useParams<{ id: string }>();
@@ -130,7 +131,14 @@ export default function Artist() {
               </TabsList>
             </div>
             <TabsContent value="albums">
-              <AlbumsList />
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <AlbumsList />
+              </motion.div>
             </TabsContent>
             <TabsContent value="top-tracks">
               <TracksListCard tracks={tracksList} />

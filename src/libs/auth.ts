@@ -3,10 +3,10 @@ import {
   generateCodeChallenge
 } from "../utils/pkce";
 
-const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID || "";
-const REDIRECT_URI = import.meta.env.VITE_SPOTIFY_REDIRECT_URI || "";
+const CLIENT_ID = import.meta.env.VITE_CLIENT_ID || "";
+const REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI || "";
+const SPOTIFY_AUTH_URL = import.meta.env.VITE_SPOTIFY_AUTHORIZED || "https://accounts.spotify.com";
 const SCOPES = ["user-read-email", "user-read-private"];
-const AUTH_URL = import.meta.env.VITE_SPOTIFY_AUTH_URL || "";
 
 export async function loginSpotify() {
   const codeVerifier = generateRandomString(128);
@@ -23,7 +23,7 @@ export async function loginSpotify() {
     code_challenge_method: "S256",
   });
 
-  const authUrl = `${AUTH_URL}?${args.toString()}`;
+  const authUrl = `${SPOTIFY_AUTH_URL}/authorize?${args.toString()}`;
 
   window.location.href = authUrl;
 }
