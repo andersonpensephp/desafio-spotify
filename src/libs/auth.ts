@@ -25,5 +25,5 @@ export async function loginSpotify() {
 
   const authUrl = `${SPOTIFY_AUTH_URL}/authorize?${args.toString()}`;
 
-  window.location.href = authUrl;
+  window.location.href = authUrl.replace("/desafio-spotify/", "/desafio-spotify/#/");
 }

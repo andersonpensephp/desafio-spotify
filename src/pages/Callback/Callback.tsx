@@ -21,6 +21,8 @@ export default function Callback() {
 
       const codeVerifier = localStorage.getItem("code_verifier");
 
+      console.log(queryString);
+
       if (!code) {
         console.log("Nenhum código encontrado");
         return;
@@ -43,11 +45,11 @@ export default function Callback() {
         });
 
         const data = response.data;
-
+        console.log('data', data);
         if (data) {
           localStorage.setItem("access_token", data?.access_token);
           localStorage.setItem("spotify_refresh", data.refresh_token);
-
+          console.log("Token salvo");
           navigate("/artists");
         } else {
           console.log("Nenhum token encontrado");
