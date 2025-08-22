@@ -9,6 +9,7 @@ import { ErrorState } from '@/components/common/ErrorState/ErrorState';
 import { PaginationComponent } from '@/components/common/Pagination/Pagination';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { formatDate } from '@/utils/date';
+import type { SimplifiedAlbum } from '@/types/spotify';
 
 import AlbumsListSkeleton from './Skeleton';
 
@@ -56,7 +57,7 @@ export default function AlbumsList() {
         {isFetching ? (
           <AlbumsListSkeleton />
         ) : (
-          albums?.items.map((album: any) => (
+          albums?.items.map((album: SimplifiedAlbum) => (
             <motion.div
               key={album.id}
               initial={{ opacity: 0, y: 20 }}
