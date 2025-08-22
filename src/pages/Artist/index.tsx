@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SearchContext } from '@/context/SearchContext';
+import type { Artist, SearchResponse, Track } from '@/types/spotify';
 
 import ArtistSkeleton from './Skeleton/ArtistSkeleton';
 import AlbumsList from './components/AlbumsList/AlbumsList';
@@ -39,10 +40,10 @@ export default function Artist() {
     refetch: refetchArtist,
   } = useQuery({
     queryKey: ['artists', id],
-    queryFn: () => getArtist<any>(id!),
+    queryFn: () => getArtist(id!),
     initialData: () => {
-      const cachedArtists = queryClient.getQueryData<any>(['artists', search]);
-      return cachedArtists?.artists?.items.find((a: any) => a.id === id) || undefined;
+      const cachedArtists = queryClient.getQueryData<SearchResponse<Artist>>(['artists', search]);
+      return cachedArtists?.artists?.items.find((a: Artist) => a.id === id) || undefined;
     },
     refetchOnWindowFocus: false,
     refetchOnMount: true,
@@ -59,7 +60,7 @@ export default function Artist() {
     refetch: refetchTracks,
   } = useQuery({
     queryKey: ['tracks', id],
-    queryFn: () => getArtistTopTracks<any>(id!, 'BR'),
+    queryFn: () => getArtistTopTracks(id!, 'BR'),
     refetchOnWindowFocus: false,
     refetchOnMount: true,
     staleTime: 10 * 60 * 1000,
@@ -72,9 +73,9 @@ export default function Artist() {
   const handleRetry = useCallback(() => {
     refetchArtist();
     refetchTracks();
-  }, [tab, refetchArtist, refetchTracks]);
+  }, [refetchArtist, refetchTracks]);
 
-  const tracksList = tracks?.tracks.map((track: any) => ({
+  const tracksList = tracks?.tracks.map((track: Track) => ({
     id: track.id,
     name: track.name,
     albumName: track.album.name,
@@ -148,7 +149,7 @@ export default function Artist() {
               </motion.div>
             </TabsContent>
             <TabsContent value="top-tracks">
-              <TracksListCard tracks={tracksList} />
+              <TracksListCard tracks={tracksList ?? []} />
             </TabsContent>
           </Tabs>
         </>

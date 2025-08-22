@@ -8,11 +8,26 @@
 > Aplicação web que consome a API do Spotify para exibir informações sobre artistas, álbuns e músicas.
 
 ---
+## * Limitações de Acesso (Spotify API)
+
+Este projeto utiliza a API do Spotify
+ para autenticação e acesso a dados. Atualmente, a aplicação está em modo Development, o que implica:
+
+Apenas usuários previamente autorizados (allowlisted) podem realizar login.
+
+O limite atual é de até 25 usuários de teste.
+
+Para que você possa testar a aplicação, forneça seu e-mail do Spotify para ser adicionado como usuário de teste no Dashboard do Spotify for Developers
+.
+
+Se você tentar autenticar sem estar na lista de usuários de teste, a autenticação será recusada.
+
+---
 
 ## 🌐 Demo
 
-O projeto está publicado no GitHub Pages:  
-[https://andersonpensephp.github.io/desafio-spotify/](https://andersonpensephp.github.io/desafio-spotify/)
+O projeto está publicado na Vercel:  
+[https://desafio-spotify.vercel.app/](https://desafio-spotify.vercel.app/)
 
 ---
 
@@ -21,7 +36,7 @@ O projeto está publicado no GitHub Pages:
 - 🔍 Busca de artistas e álbuns  
 - 📱 Layout responsivo para mobile e desktop  
 - 🎨 Interface moderna e intuitiva  
-- 🔄 Gerenciamento de estado com **React Query**  
+- 🔄 **React Query**  
 - 🔒 Autenticação com **OAuth 2.0 do Spotify (PKCE)**  
 - 🎨 Animações suaves com **Framer Motion**  
 
@@ -50,8 +65,7 @@ O projeto está publicado no GitHub Pages:
 
 - ESLint  
 - Prettier  
-- Vitest  
-- GitHub Pages  
+- Vitest 
 
 ---
 ## 📂 Estrutura do Projeto
@@ -82,7 +96,9 @@ src/
 
 - Node.js (versão 18 ou superior)  
 - npm ou yarn  
-- Conta de desenvolvedor no Spotify (para obter credenciais da API)  
+- Conta de desenvolvedor no Spotify (para obter credenciais da API)
+
+[Dashboard spotify](https://developer.spotify.com/dashboard)
 
 ---
 
@@ -108,6 +124,18 @@ http://localhost:5173
 
 ```
 
+## Enviroment
+```bash
+VITE_SPOTIFY_API=https://api.spotify.com/v1
+VITE_SPOTIFY_AUTHORIZED="https://accounts.spotify.com"
+
+VITE_CLIENT_ID=XXX
+VITE_REDIRECT_URI="http://sua-uri-spotify-callback/callback"
+
+VITE_LIMIT_PER_PAGE=20
+
+```
+
 🧪 Testes
 
 ```bash
@@ -124,15 +152,9 @@ npm run deploy
 yarn build
 yarn deploy
 ```
-📄 Licença
-
-Este projeto está sob a licença MIT.
-Veja o arquivo LICENSE para mais detalhes.
 
 👤 Autor
 
 Anderson Reis
 
 [Linkedin](https://www.linkedin.com/in/andersonfront/)
-
-

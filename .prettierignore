@@ -8,3 +8,7 @@ coverage
 *.json
 *.html
 *.lock
+.github/**/*.yml
+cypress.config.ts
+vite.config.ts
+vercel.json
