@@ -10,6 +10,7 @@ interface ArtistsItemProps {
 
 export const ArtistsItem = memo(({ artist }: ArtistsItemProps) => {
   const navigate = useNavigate();
+  const followersFormatted = artist?.followers?.total ? artist.followers.total.toLocaleString('pt-BR') : '0';
   return (
     <li>
       <Card
@@ -25,7 +26,7 @@ export const ArtistsItem = memo(({ artist }: ArtistsItemProps) => {
             className="w-24 h-24 rounded-full object-cover"
           />
           <h3 className="text-lg font-semibold">{artist.name}</h3>
-          <p className="text-gray-500">{artist.followers.total} seguidores</p>
+          <p className="text-gray-500">{followersFormatted} seguidores</p>
         </CardContent>
       </Card>
     </li>
