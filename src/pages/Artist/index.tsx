@@ -116,7 +116,7 @@ export default function Artist() {
             />
             <div>
               <h1 className="text-3xl font-bold">{artist?.name}</h1>
-              <p className="text-gray-500">{artist?.followers?.total} seguidores</p>
+              <p className="text-gray-500">{artist?.followers?.total?.toLocaleString('pt-BR')} seguidores</p>
               <div className="w-48 bg-gray-200 rounded-full h-2">
                 <div
                   className="bg-green-500 h-2 rounded-full"
