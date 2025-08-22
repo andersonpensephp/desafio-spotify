@@ -19,5 +19,15 @@ export default tseslint.config([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+
+    ignores: [
+      'node_modules',
+      'dist',
+      'cypress.config.ts',
+      'vite.config.ts',
+      'vercel.json',
+      'vitest.setup.ts',
+      'src/components/ui/**/*',
+    ],
   },
 ]);

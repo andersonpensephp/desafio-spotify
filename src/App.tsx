@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
 
 import ErrorBoundary from './components/common/ErrorBoundary/ErrorBoundary';
-import { SearchContextProvider } from './context/SearchContext';
+import { SearchContextProvider } from './context/SearchContextProvider';
 import AppRoutes from './routes';
 
 const queryClient = new QueryClient();
