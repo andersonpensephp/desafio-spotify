@@ -34,7 +34,7 @@ export default function Artists() {
     refetch: refetchArtists,
   } = useQuery({
     queryKey: ['artists', debounceSearch, pageArtists],
-    queryFn: () => getArtists<any>(debounceSearch, limit, pageArtists * limit),
+    queryFn: () => getArtists(debounceSearch, limit, pageArtists * limit),
     enabled: !!debounceSearch,
     refetchOnWindowFocus: false,
     placeholderData: (previousData) => previousData,
@@ -53,7 +53,7 @@ export default function Artists() {
     refetch: refetchAlbums,
   } = useQuery({
     queryKey: ['albums', debounceSearch, pageAlbums],
-    queryFn: () => getArtistAlbumsByQuery<any>(debounceSearch, limit, pageAlbums * limit),
+    queryFn: () => getArtistAlbumsByQuery(debounceSearch, limit, pageAlbums * limit),
     enabled: !!debounceSearch,
     refetchOnWindowFocus: false,
     placeholderData: (previousData) => previousData,
@@ -95,10 +95,10 @@ export default function Artists() {
     }
   }, [tab]);
 
-  const totalArtists = artistsData?.artists.total ?? 0;
+  const totalArtists = artistsData?.artists?.total ?? 0;
   const totalArtistsPages = useMemo(() => Math.ceil(totalArtists / limit), [totalArtists]);
 
-  const totalAlbums = albumsData?.albums.total ?? 0;
+  const totalAlbums = albumsData?.albums?.total ?? 0;
   const totalAlbumsPages = useMemo(() => Math.ceil(totalAlbums / limit), [totalAlbums]);
 
   return (
@@ -144,7 +144,7 @@ export default function Artists() {
             {isArtistsFetching ? (
               <ArtistsAlbumsListSkeleton />
             ) : (
-              artistsData?.artists.items?.map((artist: any) => (
+              artistsData?.artists?.items?.map((artist: any) => (
                 <motion.div
                   key={artist.id}
                   initial={{ opacity: 0, y: 20 }}
@@ -180,7 +180,7 @@ export default function Artists() {
             {isAlbumsFetching ? (
               <ArtistsAlbumsListSkeleton />
             ) : (
-              albumsData?.albums.items?.map((album: any) => (
+              albumsData?.albums?.items?.map((album: any) => (
                 <motion.div
                   key={album.id}
                   initial={{ opacity: 0, y: 20 }}

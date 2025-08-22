@@ -33,7 +33,7 @@ export default function Album() {
     refetch: refetchAlbum,
   } = useQuery({
     queryKey: ['albums', id],
-    queryFn: () => getAlbumById<any>(id!),
+    queryFn: () => getAlbumById(id!),
     initialData: () => {
       const cachedAlbums = queryClient.getQueryData<any>(['albums', search]);
       return cachedAlbums?.albums?.items.find((a: any) => a.id === id) || undefined;
@@ -47,7 +47,7 @@ export default function Album() {
     throwOnError: true,
   });
 
-  const tracks = albumData?.tracks.items.map((track: any) => ({
+  const tracks = albumData?.tracks?.items.map((track: any) => ({
     id: track.id,
     name: track.name,
     albumName: albumData?.name,

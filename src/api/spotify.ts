@@ -1,5 +1,14 @@
 import axios from 'axios';
 
+import type {
+  AlbumTracksResponse,
+  Artist,
+  ArtistAlbumsResponse,
+  ArtistTopTracksResponse,
+  SearchResponse,
+  SimplifiedAlbum
+} from '../types/spotify';
+
 const apiBaseUrl = import.meta.env.VITE_SPOTIFY_API;
 const limitPerPage = import.meta.env.VITE_LIMIT_PER_PAGE;
 
@@ -28,11 +37,11 @@ api.interceptors.response.use(
   }
 );
 
-export const getArtists = async <T>(
+export const getArtists = async (
   query: string,
   limit = limitPerPage,
   offset = 0
-): Promise<T> => {
+): Promise<SearchResponse<Artist>> => {
   const response = await api.get('/search', {
     params: {
       q: query,
@@ -42,24 +51,31 @@ export const getArtists = async <T>(
     },
   });
 
-  return response.data as T;
+  return response.data;
 };
 
-export const getArtist = async <T>(id: string): Promise<T> => {
+export const getArtist = async (id: string): Promise<Artist> => {
   const response = await api.get(`/artists/${id}`);
-  return response.data as T;
+  return response.data;
 };
 
-export const getArtistTopTracks = async <T>(id: string, market: string): Promise<T> => {
+export const getArtistTopTracks = async (
+  id: string,
+  market: string
+): Promise<ArtistTopTracksResponse> => {
   const response = await api.get(`/artists/${id}/top-tracks`, {
     params: {
       market,
     },
   });
-  return response.data as T;
+  return response.data;
 };
 
-export const getArtistAlbums = async <T>(id: string, limit: number, offset = 0): Promise<T> => {
+export const getArtistAlbums = async (
+  id: string,
+  limit: number,
+  offset = 0
+): Promise<ArtistAlbumsResponse> => {
   const response = await api.get(`/artists/${id}/albums`, {
     params: {
       limit,
@@ -67,10 +83,14 @@ export const getArtistAlbums = async <T>(id: string, limit: number, offset = 0):
     },
   });
 
-  return response.data as T;
+  return response.data;
 };
 
-export const getAlbumTracks = async <T>(id: string, limit: number, offset = 0): Promise<T> => {
+export const getAlbumTracks = async (
+  id: string,
+  limit: number,
+  offset = 0
+): Promise<AlbumTracksResponse> => {
   const response = await api.get(`/albums/${id}/tracks`, {
     params: {
       limit,
@@ -78,19 +98,19 @@ export const getAlbumTracks = async <T>(id: string, limit: number, offset = 0): 
     },
   });
 
-  return response.data as T;
+  return response.data;
 };
 
-export const getAlbumById = async <T>(id: string): Promise<T> => {
+export const getAlbumById = async (id: string): Promise<SimplifiedAlbum> => {
   const response = await api.get(`/albums/${id}`);
-  return response.data as T;
+  return response.data;
 };
 
-export const getArtistAlbumsByQuery = async <T>(
+export const getArtistAlbumsByQuery = async (
   query: string,
   limit = limitPerPage,
   offset = 0
-): Promise<T> => {
+): Promise<SearchResponse<SimplifiedAlbum>> => {
   const response = await api.get(`/search`, {
     params: {
       q: query,
@@ -99,5 +119,5 @@ export const getArtistAlbumsByQuery = async <T>(
       offset,
     },
   });
-  return response.data as T;
+  return response.data;
 };

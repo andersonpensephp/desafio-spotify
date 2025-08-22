@@ -26,7 +26,7 @@ export default function AlbumsList() {
     refetch: refetchAlbums,
   } = useQuery({
     queryKey: ['albums', id, limit, page],
-    queryFn: () => getArtistAlbums<any>(id!, limit, page * limit),
+    queryFn: () => getArtistAlbums(id!, limit, page * limit),
     placeholderData: (previousData) => previousData,
     refetchOnWindowFocus: false,
     refetchOnMount: true,
