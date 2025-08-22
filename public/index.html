@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Redirecting...</title>
+  <script>
+    // Redireciona qualquer 404 para o index.html do projeto
+    var path = window.location.pathname.replace("/desafio-spotify", "");
+    window.location.href = "/desafio-spotify/" + (path + window.location.search + window.location.hash);
+  </script>
+</head>
+
+<body></body>
+
+</html>
