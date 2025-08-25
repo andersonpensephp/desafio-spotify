@@ -61,13 +61,13 @@ export default function Album() {
       <Breadcrumb className="mb-6">
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink className="cursor-pointer" onClick={() => navigate('/artists')}>
+            <BreadcrumbLink className="cursor-pointer" onClick={() => navigate(-1)}>
               Artistas
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>Album</BreadcrumbPage>
+            <BreadcrumbPage>{albumData?.name ?? ''}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
