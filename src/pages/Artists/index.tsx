@@ -68,9 +68,7 @@ export default function Artists() {
   const handleSearch = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
-      setTimeout(() => {
-        setSearch(value);
-      }, 0);
+      setSearch(value);
     },
     [setSearch]
   );
