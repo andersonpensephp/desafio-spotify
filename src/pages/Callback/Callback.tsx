@@ -1,3 +1,4 @@
+import { SpinnerIcon } from '@phosphor-icons/react';
 import axios from 'axios';
 
 import { useEffect } from 'react';
@@ -53,5 +54,9 @@ export default function Callback() {
     getToken();
   }, [navigate]);
 
-  return <div>Callback</div>;
+  return (
+    <div className="flex flex-col items-center justify-center h-screen">
+      <SpinnerIcon size={60} className='animate-spin' />
+    </div>
+  );
 }
