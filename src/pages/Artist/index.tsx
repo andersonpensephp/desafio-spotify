@@ -89,7 +89,7 @@ export default function Artist() {
       <Breadcrumb className="mb-6">
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink className="cursor-pointer" onClick={() => navigate('/artists')}>
+            <BreadcrumbLink className="cursor-pointer" onClick={() => navigate(-1)}>
               Artistas
             </BreadcrumbLink>
           </BreadcrumbItem>
