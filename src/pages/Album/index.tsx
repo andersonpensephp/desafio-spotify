@@ -42,20 +42,7 @@ export default function Album() {
         search,
         pageAlbums,
       ]);
-      const cachedAlbum = cachedAlbums?.albums?.items.find((a) => a.id === id);
-      if (!cachedAlbum) return undefined;
-
-      return {
-        ...cachedAlbum,
-        tracks: {
-          items: [],
-          total: cachedAlbum.total_tracks,
-          limit: 0,
-          offset: 0,
-          next: null,
-          previous: null,
-        },
-      } as unknown as Album;
+      return cachedAlbums?.albums?.items.find((a) => a.id === id) || undefined;
     },
     refetchOnWindowFocus: false,
     refetchOnMount: true,
