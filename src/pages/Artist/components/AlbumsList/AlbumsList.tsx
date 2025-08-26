@@ -8,8 +8,8 @@ import { getArtistAlbums } from '@/api/spotify';
 import { ErrorState } from '@/components/common/ErrorState/ErrorState';
 import { PaginationComponent } from '@/components/common/Pagination/Pagination';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { formatDate } from '@/utils/date';
 import type { SimplifiedAlbum } from '@/types/spotify';
+import { formatDate } from '@/utils/date';
 
 import AlbumsListSkeleton from './Skeleton';
 

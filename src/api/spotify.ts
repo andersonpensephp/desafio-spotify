@@ -1,12 +1,13 @@
 import axios from 'axios';
 
 import type {
+  Album,
   AlbumTracksResponse,
   Artist,
   ArtistAlbumsResponse,
   ArtistTopTracksResponse,
   SearchResponse,
-  SimplifiedAlbum
+  SimplifiedAlbum,
 } from '../types/spotify';
 
 const apiBaseUrl = import.meta.env.VITE_SPOTIFY_API;
@@ -88,7 +89,7 @@ export const getArtistAlbums = async (
 
 export const getAlbumTracks = async (
   id: string,
-  limit: number,
+  limit?: number,
   offset = 0
 ): Promise<AlbumTracksResponse> => {
   const response = await api.get(`/albums/${id}/tracks`, {
@@ -101,7 +102,7 @@ export const getAlbumTracks = async (
   return response.data;
 };
 
-export const getAlbumById = async (id: string): Promise<SimplifiedAlbum> => {
+export const getAlbumById = async (id: string): Promise<Album> => {
   const response = await api.get(`/albums/${id}`);
   return response.data;
 };

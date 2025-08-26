@@ -4,9 +4,9 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
-import { getAlbumById } from '@/api/spotify';
+import { getAlbumById, getAlbumTracks } from '@/api/spotify';
 import { ErrorState } from '@/components/common/ErrorState/ErrorState';
-import { TracksListCard } from '@/components/common/TracksListCard/TracksListCard';
+import { type Track, TracksListCard } from '@/components/common/TracksListCard/TracksListCard';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -16,13 +16,15 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { SearchContext } from '@/context/SearchContext';
+import type { Album, SearchResponse, SimplifiedAlbum, SimplifiedTrack } from '@/types/spotify';
 import { formatDate } from '@/utils/date';
 
 import AlbumSkeleton from './Skeleton/AlbumSkeleton';
+import TracksListSkeleton from './Skeleton/TracksListSkeleton';
 
 export default function Album() {
   const { id } = useParams<{ id: string }>();
-  const { search } = useContext(SearchContext);
+  const { search, pageAlbums } = useContext(SearchContext);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -35,8 +37,25 @@ export default function Album() {
     queryKey: ['albums', id],
     queryFn: () => getAlbumById(id!),
     initialData: () => {
-      const cachedAlbums = queryClient.getQueryData<any>(['albums', search]);
-      return cachedAlbums?.albums?.items.find((a: any) => a.id === id) || undefined;
+      const cachedAlbums = queryClient.getQueryData<SearchResponse<SimplifiedAlbum>>([
+        'albums',
+        search,
+        pageAlbums,
+      ]);
+      const cachedAlbum = cachedAlbums?.albums?.items.find((a) => a.id === id);
+      if (!cachedAlbum) return undefined;
+
+      return {
+        ...cachedAlbum,
+        tracks: {
+          items: [],
+          total: cachedAlbum.total_tracks,
+          limit: 0,
+          offset: 0,
+          next: null,
+          previous: null,
+        },
+      } as unknown as Album;
     },
     refetchOnWindowFocus: false,
     refetchOnMount: true,
@@ -47,21 +66,39 @@ export default function Album() {
     throwOnError: true,
   });
 
-  const tracks = albumData?.tracks?.items.map((track: any) => ({
-    id: track.id,
-    name: track.name,
-    albumName: albumData?.name,
-    albumImage: albumData?.images[0].url,
-    artists: track.artists,
-    duration_ms: track.duration_ms,
-  }));
+  const {
+    data: tracksData,
+    isLoading: tracksLoading,
+    error: tracksError,
+    refetch: refetchTracks,
+  } = useQuery({
+    queryKey: ['tracks', id],
+    queryFn: () => getAlbumTracks(id!, 50),
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    retry: 2,
+    retryDelay: 1000,
+    throwOnError: true,
+  });
+
+  const tracks = tracksData?.items
+    .filter((track: SimplifiedTrack) => track.track_number !== null)
+    .map((track: SimplifiedTrack) => ({
+      id: track.id,
+      name: track.name,
+      albumName: albumData?.name,
+      albumImage: albumData?.images?.[0]?.url,
+      artists: track.artists,
+      duration_ms: track.duration_ms,
+    })) as Track[];
 
   return (
     <div className="p-6">
       <Breadcrumb className="mb-6">
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink className="cursor-pointer" onClick={() => navigate(-1)}>
+            <BreadcrumbLink className="cursor-pointer" onClick={() => navigate('/artists')}>
               Artistas
             </BreadcrumbLink>
           </BreadcrumbItem>
@@ -77,7 +114,9 @@ export default function Album() {
       ) : albumError ? (
         <ErrorState
           message={albumError?.message || 'Erro ao buscar album'}
-          onRetry={refetchAlbum}
+          onRetry={() => {
+            refetchAlbum();
+          }}
         />
       ) : (
         <>
@@ -89,14 +128,28 @@ export default function Album() {
           />
           <div>
             <h1 className="text-3xl font-bold mb-2">{albumData?.name}</h1>
-            <p className="text-gray-500">{formatDate(albumData?.release_date, 'dd/MM/yyyy')}</p>
+            <p className="text-gray-500">
+              {formatDate(albumData?.release_date ?? '', 'dd/MM/yyyy')}
+            </p>
           </div>
           <div className="mt-6">
             <h2 className="text-2xl font-bold mb-4"> {albumData?.total_tracks} faixas</h2>
-            <TracksListCard tracks={tracks} />
           </div>
         </>
       )}
+
+      <div className="mt-6">
+        {tracksLoading ? (
+          <TracksListSkeleton />
+        ) : tracksError ? (
+          <ErrorState
+            message={tracksError?.message || 'Erro ao buscar faixas'}
+            onRetry={() => refetchTracks()}
+          />
+        ) : (
+          <TracksListCard tracks={tracks} />
+        )}
+      </div>
     </div>
   );
 }
