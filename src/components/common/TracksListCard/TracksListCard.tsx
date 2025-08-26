@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/card';
 import { CardContent } from '@/components/ui/card';
 import { millisToMinutesAndSeconds } from '@/utils/timers';
 
-interface Track {
+export interface Track {
   id: string;
   name: string;
   albumName: string;

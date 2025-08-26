@@ -56,7 +56,7 @@ export default function Callback() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <SpinnerIcon size={60} className='animate-spin' />
+      <SpinnerIcon size={60} className="animate-spin" />
     </div>
   );
 }

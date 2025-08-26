@@ -10,7 +10,9 @@ interface ArtistsItemProps {
 
 export const ArtistsItem = memo(({ artist }: ArtistsItemProps) => {
   const navigate = useNavigate();
-  const followersFormatted = artist?.followers?.total ? artist.followers.total.toLocaleString('pt-BR') : '0';
+  const followersFormatted = artist?.followers?.total
+    ? artist.followers.total.toLocaleString('pt-BR')
+    : '0';
   return (
     <li>
       <Card

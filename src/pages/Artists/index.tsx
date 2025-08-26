@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo } from 'react';
 
 import { ErrorState } from '@/components/common/ErrorState/ErrorState';
 import { PaginationComponent } from '@/components/common/Pagination/Pagination';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import type { Artist, SimplifiedAlbum } from '@/types/spotify';
 
 import { getArtistAlbumsByQuery, getArtists } from '../../api/spotify';
 import { SearchContext } from '../../context/SearchContext';
@@ -14,18 +15,15 @@ import { useDebounce } from '../../hooks/useDebounce';
 import ArtistsAlbumsListSkeleton from './Skeleton/ArtistsAlbumsListSkeleton';
 import { AlbumsItem } from './components/AlbumsItem/AlbumsItem';
 import { ArtistsItem } from './components/ArtistsItem/ArtistsItem';
-import type { Artist, SimplifiedAlbum } from '@/types/spotify';
 
 const limit = import.meta.env.VITE_LIMIT_PER_PAGE;
 
 const DEBOUNCE_DELAY = 600;
 
 export default function Artists() {
-  const { search, setSearch, tab, setTab } = useContext(SearchContext);
+  const { search, setSearch, tab, setTab, pageArtists, setPageArtists, pageAlbums, setPageAlbums } =
+    useContext(SearchContext);
   const debounceSearch = useDebounce(search, DEBOUNCE_DELAY);
-
-  const [pageArtists, setPageArtists] = useState(0);
-  const [pageAlbums, setPageAlbums] = useState(0);
 
   // Query de artistas
   const {
@@ -84,7 +82,7 @@ export default function Artists() {
   useEffect(() => {
     setPageArtists(0);
     setPageAlbums(0);
-  }, [debounceSearch]);
+  }, [debounceSearch, setPageArtists, setPageAlbums]);
 
   useEffect(() => {
     if (tab === 'artists') {
@@ -92,7 +90,7 @@ export default function Artists() {
     } else {
       setPageAlbums(0);
     }
-  }, [tab]);
+  }, [tab, setPageArtists, setPageAlbums]);
 
   const totalArtists = artistsData?.artists?.total ?? 0;
   const totalArtistsPages = useMemo(() => Math.ceil(totalArtists / limit), [totalArtists]);
