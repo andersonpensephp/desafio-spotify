@@ -21,12 +21,14 @@ import { formatDate } from '@/utils/date';
 
 import AlbumSkeleton from './Skeleton/AlbumSkeleton';
 import TracksListSkeleton from './Skeleton/TracksListSkeleton';
+import { useTranslation } from 'react-i18next';
 
 export default function Album() {
   const { id } = useParams<{ id: string }>();
   const { search, pageAlbums } = useContext(SearchContext);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   const {
     data: albumData,
@@ -86,7 +88,7 @@ export default function Album() {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink className="cursor-pointer" onClick={() => navigate('/artists')}>
-              Artistas
+              {t('artists')}
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
@@ -100,7 +102,7 @@ export default function Album() {
         <AlbumSkeleton />
       ) : albumError ? (
         <ErrorState
-          message={albumError?.message || 'Erro ao buscar album'}
+          message={albumError?.message || `${t('erros.errorAlbum')}`}
           onRetry={() => {
             refetchAlbum();
           }}
@@ -116,11 +118,11 @@ export default function Album() {
           <div>
             <h1 className="text-3xl font-bold mb-2">{albumData?.name}</h1>
             <p className="text-gray-500">
-              {formatDate(albumData?.release_date ?? '', 'dd/MM/yyyy')}
+              {t('releaseDate')}: {formatDate(albumData?.release_date ?? '', 'dd/MM/yyyy')}
             </p>
           </div>
           <div className="mt-6">
-            <h2 className="text-2xl font-bold mb-4"> {albumData?.total_tracks} faixas</h2>
+            <h2 className="text-2xl font-bold mb-4"> {albumData?.total_tracks} {t('tracks')}</h2>
           </div>
         </>
       )}
@@ -130,7 +132,7 @@ export default function Album() {
           <TracksListSkeleton />
         ) : tracksError ? (
           <ErrorState
-            message={tracksError?.message || 'Erro ao buscar faixas'}
+            message={tracksError?.message || `${t('erros.errorTracks')}`}
             onRetry={() => refetchTracks()}
           />
         ) : (

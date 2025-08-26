@@ -1,0 +1,18 @@
+{
+  "login": "Login",
+  "loginSpotify": "Login with Spotify",
+  "artists": "Artists",
+  "albums": "Albums",
+  "tracks": "Tracks",
+  "artist": "Artist",
+  "album": "Album",
+  "track": "Track",
+  "search": "Search",
+  "followers": "Followers",
+  "releaseDate": "Release Date",
+  "topTracks": "Top Tracks",
+  "erros": {
+    "errorAlbum": "Error fetching album",
+    "errorTracks": "Error fetching tracks"
+  }
+}

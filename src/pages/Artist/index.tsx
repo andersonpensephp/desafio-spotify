@@ -24,12 +24,14 @@ import type { Artist, SearchResponse, Track } from '@/types/spotify';
 
 import ArtistSkeleton from './Skeleton/ArtistSkeleton';
 import AlbumsList from './components/AlbumsList/AlbumsList';
+import { useTranslation } from 'react-i18next';
 
 export default function Artist() {
   const { id } = useParams<{ id: string }>();
   const [tab, setTab] = useState('albums');
   const { search } = useContext(SearchContext);
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
 
@@ -90,7 +92,7 @@ export default function Artist() {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink className="cursor-pointer" onClick={() => navigate('/artists')}>
-              Artistas
+              {t('artists')}
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
@@ -103,7 +105,7 @@ export default function Artist() {
         <ArtistSkeleton />
       ) : artistError || tracksError ? (
         <ErrorState
-          message={artistError?.message || 'Erro ao buscar artista'}
+          message={artistError?.message || tracksError?.message || 'Erro ao buscar artista'}
           onRetry={handleRetry}
         />
       ) : (
@@ -117,7 +119,7 @@ export default function Artist() {
             <div>
               <h1 className="text-3xl font-bold">{artist?.name}</h1>
               <p className="text-gray-500">
-                {artist?.followers?.total?.toLocaleString('pt-BR')} seguidores
+                {artist?.followers?.total?.toLocaleString('pt-BR')} {t('followers')}
               </p>
               <div className="w-48 bg-gray-200 rounded-full h-2">
                 <div
@@ -136,8 +138,8 @@ export default function Artist() {
           >
             <div className="flex items-center gap-6 mb-6">
               <TabsList>
-                <TabsTrigger value="albums">Albuns</TabsTrigger>
-                <TabsTrigger value="top-tracks">Principais faixas</TabsTrigger>
+                <TabsTrigger value="albums">{t('albums')}</TabsTrigger>
+                <TabsTrigger value="top-tracks">{t('topTracks')}</TabsTrigger>
               </TabsList>
             </div>
             <TabsContent value="albums">

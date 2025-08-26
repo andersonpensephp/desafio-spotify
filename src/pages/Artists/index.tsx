@@ -15,6 +15,7 @@ import { useDebounce } from '../../hooks/useDebounce';
 import ArtistsAlbumsListSkeleton from './Skeleton/ArtistsAlbumsListSkeleton';
 import { AlbumsItem } from './components/AlbumsItem/AlbumsItem';
 import { ArtistsItem } from './components/ArtistsItem/ArtistsItem';
+import { useTranslation } from 'react-i18next';
 
 const limit = import.meta.env.VITE_LIMIT_PER_PAGE;
 
@@ -24,6 +25,7 @@ export default function Artists() {
   const { search, setSearch, tab, setTab, pageArtists, setPageArtists, pageAlbums, setPageAlbums } =
     useContext(SearchContext);
   const debounceSearch = useDebounce(search, DEBOUNCE_DELAY);
+  const { t } = useTranslation();
 
   // Query de artistas
   const {
@@ -104,7 +106,7 @@ export default function Artists() {
         <div className="w-full max-w-md">
           <Input
             type="text"
-            placeholder={`Buscar ${tab === 'artists' ? 'artistas' : 'albuns'}`}
+            placeholder={`${t('search')} ${tab === 'artists' ? t('artist') : t('albums')}`}
             value={search}
             onChange={handleSearch}
           />
@@ -120,17 +122,17 @@ export default function Artists() {
         <div className="flex items-center gap-6 mb-6">
           <TabsList>
             <TabsTrigger className="cursor-pointer" value="artists">
-              Artistas
+              {t('artists')}
             </TabsTrigger>
             <TabsTrigger className="cursor-pointer" value="albums">
-              Albuns
+              {t('albums')}
             </TabsTrigger>
           </TabsList>
         </div>
 
         {/* Tab Artists */}
         <TabsContent value="artists">
-          <h2 className="text-2xl font-bold pb-4">Artistas</h2>
+          <h2 className="text-2xl font-bold pb-4">{t('artists')}</h2>
           {artistsError && (
             <ErrorState
               message={artistsError?.message || 'Erro ao buscar artistas'}
@@ -166,7 +168,7 @@ export default function Artists() {
 
         {/* Tab Albums */}
         <TabsContent value="albums">
-          <h2 className="text-2xl font-bold pb-4">Albuns</h2>
+          <h2 className="text-2xl font-bold pb-4">{t('albums')}</h2>
           {albumsError && (
             <ErrorState
               message={albumsError?.message || 'Erro ao buscar albuns'}

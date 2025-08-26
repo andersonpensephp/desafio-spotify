@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Card, CardContent } from '@/components/ui/card';
 import type { Artist } from '@/types/spotify';
+import { useTranslation } from 'react-i18next';
 
 interface ArtistsItemProps {
   artist: Artist;
@@ -13,6 +14,8 @@ export const ArtistsItem = memo(({ artist }: ArtistsItemProps) => {
   const followersFormatted = artist?.followers?.total
     ? artist.followers.total.toLocaleString('pt-BR')
     : '0';
+  const { t } = useTranslation();
+
   return (
     <li>
       <Card
@@ -28,7 +31,7 @@ export const ArtistsItem = memo(({ artist }: ArtistsItemProps) => {
             className="w-24 h-24 rounded-full object-cover"
           />
           <h3 className="text-lg font-semibold">{artist.name}</h3>
-          <p className="text-gray-500">{followersFormatted} seguidores</p>
+          <p className="text-gray-500">{followersFormatted} {t('followers')}</p>
         </CardContent>
       </Card>
     </li>
