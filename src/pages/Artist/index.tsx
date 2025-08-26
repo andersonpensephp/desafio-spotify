@@ -63,6 +63,7 @@ export default function Artist() {
   } = useQuery({
     queryKey: ['tracks', id],
     queryFn: () => getArtistTopTracks(id!, 'BR'),
+    enabled: tab === 'top-tracks',
     refetchOnWindowFocus: false,
     refetchOnMount: true,
     staleTime: 10 * 60 * 1000,
@@ -101,6 +102,7 @@ export default function Artist() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
+
       {artistLoading ? (
         <ArtistSkeleton />
       ) : artistError || tracksError ? (
