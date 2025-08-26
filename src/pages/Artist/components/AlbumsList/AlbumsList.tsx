@@ -74,7 +74,7 @@ export default function AlbumsList() {
                   />
                 </CardHeader>
                 <CardContent>
-                  <CardTitle>
+                  <CardTitle className="mb-2">
                     <h2>{album.name}</h2>
                   </CardTitle>
                   <CardDescription>{formatDate(album.release_date, 'dd/MM/yyyy')}</CardDescription>
