@@ -1,4 +1,5 @@
 import { SpotifyLogoIcon } from '@phosphor-icons/react';
+import LanguageSelect from '../LanguageSelect/LanguageSelect';
 
 export const Header = () => {
   return (
@@ -7,6 +8,7 @@ export const Header = () => {
         <SpotifyLogoIcon size={32} />
         <h1 className="text-2xl font-bold">Spotify API</h1>
       </div>
+      <LanguageSelect />
     </header>
   );
 };

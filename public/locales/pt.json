@@ -1,0 +1,18 @@
+{
+  "login": "Login",
+  "loginSpotify": "Entrar com Spotify",
+  "artists": "Artistas",
+  "albums": "Albuns",
+  "tracks": "Faixas",
+  "artist": "Artista",
+  "album": "Album",
+  "track": "Faixa",
+  "search": "Buscar",
+  "followers": "Seguidores",
+  "releaseDate": "Data de lançamento",
+  "topTracks": "Principais Faixas",
+  "erros": {
+    "errorAlbum": "Erro ao buscar album",
+    "errorTracks": "Erro ao buscar faixas"
+  }
+}
