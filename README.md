@@ -39,6 +39,14 @@ O projeto está publicado na Vercel:
 - 🔄 **React Query**  
 - 🔒 Autenticação com **OAuth 2.0 do Spotify (PKCE)**  
 - 🎨 Animações suaves com **Framer Motion**  
+- 🌐 **i18next**  
+- 🎨 **Shadcn UI**  
+- 🎨 **TailwindCSS**  
+- 🎨 **React Router**  
+- 🎨 **React Query**  
+- 🎨 **Phosphor Icons**  
+- 🎨 **date-fns**  
+- 🎨 **Framer Motion**  
 
 ---
 
@@ -49,6 +57,9 @@ O projeto está publicado na Vercel:
 - React 18  
 - TypeScript  
 - Vite  
+- Cypress  
+- i18next  
+- Shadcn UI  
 - TailwindCSS  
 - React Router  
 - React Query  
@@ -79,6 +90,7 @@ src/
 │   └── ui/        # Componentes de UI estilizados
 ├── context/       # Contextos do React
 ├── hooks/         # Custom hooks
+├── i18n/          # Configuração de internacionalização
 ├── libs/          # Bibliotecas e utilitários
 │   └── auth/      # Lógica de autenticação
 ├── pages/         # Componentes de página
@@ -86,8 +98,10 @@ src/
 │   ├── Artists/   # Página de busca de artistas
 │   ├── Album/     # Página do álbum
 │   └── Home/      # Página inicial
+├── routes/        # Rotas da aplicação
 ├── styles/        # Estilos globais e temas
-└── utils/         # Funções utilitárias
+├── utils/         # Funções utilitárias
+└── layouts/       # Layouts da aplicação
 ```
 
 ---
@@ -145,6 +159,11 @@ VITE_LIMIT_PER_PAGE=20
 npm run test
 # ou
 yarn test
+
+# ou
+npm run cy:open
+# ou
+yarn cy:open
 ```
 🚀 Deploy
 
