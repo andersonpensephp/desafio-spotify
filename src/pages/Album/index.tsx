@@ -72,7 +72,7 @@ export default function Album() {
         <>
           <h1 className="text-3xl font-bold mb-3">{albumData?.name}</h1>
           <div
-            className="aspect-[16/9] bg-cover bg-center p-0 rounded-md mb-6 w-full h-96"
+            className="bg-cover bg-top bg-center p-0 rounded-md mb-6 w-full h-96"
             style={{
               backgroundImage: `url(${albumData?.images[0].url})`,
             }}
