@@ -30,7 +30,7 @@ export default function Artist() {
   const location = useLocation();
 
   const previousPath = location.state?.from || '/artists';
-  const breadcrumbLabel = location.state?.breadcrumbLabel || t('back');
+  const breadcrumbLabel = t('back');
 
   const isTopTracksTab = tab === 'top-tracks';
 
