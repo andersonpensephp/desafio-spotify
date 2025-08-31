@@ -23,7 +23,7 @@ export default function Album() {
   const location = useLocation();
 
   const previousPath = location.state?.from || '/artists';
-  const breadcrumbLabel = location.state?.breadcrumbLabel || 'Voltar';
+  const breadcrumbLabel = t('back');
 
   const {
     data: albumData,
@@ -49,7 +49,7 @@ export default function Album() {
       duration_ms: track.duration_ms,
       urlSpotify: track.external_urls?.spotify,
     })) as Track[];
-  console.log(albumData);
+
   return (
     <div className="p-6">
       <Breadcrumbs
