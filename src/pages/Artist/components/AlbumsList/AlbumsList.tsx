@@ -1,15 +1,14 @@
-import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 
 import { useCallback, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 
-import { getArtistAlbums } from '@/api/spotify';
 import { ErrorState } from '@/components/common/ErrorState/ErrorState';
 import { PaginationComponent } from '@/components/common/Pagination/Pagination';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import type { SimplifiedAlbum } from '@/types/spotify';
 import { formatDate } from '@/utils/date';
+import { useArtistAlbumQuery } from '@/hooks/spotify/useArtistAlbumQuery';
 
 import AlbumsListSkeleton from './Skeleton';
 
@@ -18,25 +17,18 @@ const limit = import.meta.env.VITE_LIMIT_PER_PAGE;
 export default function AlbumsList() {
   const [page, setPage] = useState(0);
 
+  const navigate = useNavigate();
+
   const { id } = useParams();
+
+  const location = useLocation();
 
   const {
     data: albums,
     isFetching,
     error: albumsError,
     refetch: refetchAlbums,
-  } = useQuery({
-    queryKey: ['albums', id, limit, page],
-    queryFn: () => getArtistAlbums(id!, limit, page * limit),
-    placeholderData: (previousData) => previousData,
-    refetchOnWindowFocus: false,
-    refetchOnMount: true,
-    staleTime: 10 * 60 * 1000,
-    gcTime: 5 * 60 * 1000,
-    retry: 2,
-    retryDelay: 1000,
-    throwOnError: true,
-  });
+  } = useArtistAlbumQuery({ id: id!, limit, page });
 
   const totalAlbums = albums?.total ?? 0;
   const totalPages = Math.ceil(totalAlbums / limit);
@@ -65,7 +57,18 @@ export default function AlbumsList() {
               exit={{ opacity: 0, y: 20 }}
               transition={{ duration: 0.3 }}
             >
-              <Card className="shadow-md hover:shadow-xl transition-shadow pt-0 pl-0 pr-0">
+              <Card
+                onClick={() => navigate(
+                  `/album/${album.id}`,
+                  {
+                    state: {
+                      from: location.pathname + location.search,
+                      breadcrumbLabel: 'artist'
+                    }
+                  }
+                )}
+                className="shadow-md hover:shadow-xl transition-shadow pt-0 pl-0 pr-0 cursor-pointer"
+              >
                 <CardHeader className="p-0">
                   <img
                     src={album.images[0].url}

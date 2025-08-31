@@ -35,7 +35,6 @@ export const PaginationComponent = ({
             </button>
           </PaginationItem>
           {Array.from({ length: Math.min(maxVisiblePages, totalPages) })
-            // .slice(page, page + maxVisiblePages)
             .map((_, index) => {
               let pageIndex =
                 Math.max(
@@ -45,7 +44,7 @@ export const PaginationComponent = ({
               pageIndex = Math.min(pageIndex, totalPages - 1);
               return (
                 <PaginationItem key={pageIndex}>
-                  <PaginationLink onClick={() => setPage(pageIndex)} isActive={page === pageIndex}>
+                  <PaginationLink className="cursor-pointer" onClick={() => setPage(pageIndex)} isActive={page === pageIndex}>
                     {pageIndex + 1}
                   </PaginationLink>
                 </PaginationItem>

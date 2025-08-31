@@ -14,7 +14,7 @@ describe('Artist', () => {
 
     cy.get('button').contains('Albuns').click();
 
-    cy.get('button').contains('Principais faixas').click();
+    cy.get('button').contains('Principais Músicas').click();
 
     cy.get('h2').should('contain', 'Track One');
     cy.get('h2').should('contain', 'Track Two');

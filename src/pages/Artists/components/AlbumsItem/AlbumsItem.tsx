@@ -19,7 +19,15 @@ export const AlbumsItem = memo(({ album }: AlbumsItemProps) => {
       <Card
         className="w-full h-64 shadow-md hover:shadow-xl transition-shadow cursor-pointer"
         onClick={() => {
-          navigate(`/album/${album.id}`);
+          navigate(
+            `/album/${album.id}`,
+            {
+              state: {
+                from: location.pathname + location.search,
+                breadcrumbLabel: 'artists'
+              }
+            }
+          );
         }}
       >
         <CardContent className="flex flex-col items-center p-4 gap-2">
