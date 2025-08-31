@@ -1,77 +1,51 @@
-import { useQuery } from '@tanstack/react-query';
-import { useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-
 import { useCallback, useState } from 'react';
 import { useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-import { getArtist, getArtistTopTracks } from '@/api/spotify';
 import { ErrorState } from '@/components/common/ErrorState/ErrorState';
 import { TracksListCard } from '@/components/common/TracksListCard/TracksListCard';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SearchContext } from '@/context/SearchContext';
-import type { Artist, SearchResponse, Track } from '@/types/spotify';
+import type { Artist, Track } from '@/types/spotify';
 
 import ArtistSkeleton from './Skeleton/ArtistSkeleton';
 import AlbumsList from './components/AlbumsList/AlbumsList';
 import { useTranslation } from 'react-i18next';
+import { useArtistQuery } from '@/hooks/spotify/useArtistQuery';
+import { useArtistTopTracksQuery } from '@/hooks/spotify/useArtistTopTracksQuery';
+import { Breadcrumbs } from '@/components/common/Breadcrumbs/Breadcrumbs';
+import { useLocation } from 'react-router-dom';
 
 export default function Artist() {
   const { id } = useParams<{ id: string }>();
   const [tab, setTab] = useState('albums');
-  const { search } = useContext(SearchContext);
-  const queryClient = useQueryClient();
+  const { search, pageArtists } = useContext(SearchContext);
   const { t } = useTranslation();
 
   const navigate = useNavigate();
+
+  const location = useLocation();
+
+  const previousPath = location.state?.from || '/artists';
+  const breadcrumbLabel = location.state?.breadcrumbLabel || t('back');
+
+  const isTopTracksTab = tab === 'top-tracks';
 
   const {
     data: artist,
     isLoading: artistLoading,
     error: artistError,
-    refetch: refetchArtist,
-  } = useQuery({
-    queryKey: ['artists', id],
-    queryFn: () => getArtist(id!),
-    initialData: () => {
-      const cachedArtists = queryClient.getQueryData<SearchResponse<Artist>>(['artists', search]);
-      return cachedArtists?.artists?.items.find((a: Artist) => a.id === id) || undefined;
-    },
-    refetchOnWindowFocus: false,
-    refetchOnMount: true,
-    staleTime: 10 * 60 * 1000,
-    gcTime: 5 * 60 * 1000,
-    retry: 2,
-    retryDelay: 1000,
-    throwOnError: true,
-  });
+    refetch: refetchArtist
+  } = useArtistQuery({ id: id!, search, pageArtists });
 
   const {
     data: tracks,
     error: tracksError,
-    refetch: refetchTracks,
-  } = useQuery({
-    queryKey: ['tracks', id],
-    queryFn: () => getArtistTopTracks(id!, 'BR'),
-    enabled: tab === 'top-tracks',
-    refetchOnWindowFocus: false,
-    refetchOnMount: true,
-    staleTime: 10 * 60 * 1000,
-    gcTime: 5 * 60 * 1000,
-    retry: 2,
-    retryDelay: 1000,
-    throwOnError: true,
-  });
+    refetch: refetchTracks
+  } = useArtistTopTracksQuery({ id: id!, country: 'BR', enabled: isTopTracksTab });
 
   const handleRetry = useCallback(() => {
     refetchArtist();
@@ -85,23 +59,17 @@ export default function Artist() {
     albumImage: track.album.images[0].url,
     artists: track.artists,
     duration_ms: track.duration_ms,
+    urlSpotify: track.external_urls?.spotify,
   }));
 
   return (
     <div className="p-6">
-      <Breadcrumb className="mb-6">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink className="cursor-pointer" onClick={() => navigate('/artists')}>
-              {t('artists')}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>{artist?.name}</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <Breadcrumbs
+        items={[
+          { label: t(breadcrumbLabel), path: previousPath },
+          { label: artist?.name ?? '' }
+        ]}
+      />
 
       {artistLoading ? (
         <ArtistSkeleton />
@@ -140,8 +108,8 @@ export default function Artist() {
           >
             <div className="flex items-center gap-6 mb-6">
               <TabsList>
-                <TabsTrigger value="albums">{t('albums')}</TabsTrigger>
-                <TabsTrigger value="top-tracks">{t('topTracks')}</TabsTrigger>
+                <TabsTrigger className="cursor-pointer" value="albums">{t('albums')}</TabsTrigger>
+                <TabsTrigger className="cursor-pointer" value="top-tracks">{t('topTracks')}</TabsTrigger>
               </TabsList>
             </div>
             <TabsContent value="albums">

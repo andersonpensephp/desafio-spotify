@@ -36,6 +36,24 @@
 //   }
 // }
 
+export { };
+
+Cypress.Commands.add('fakeSpotifyLogin', () => {
+  cy.window().then((win) => {
+    win.localStorage.setItem('access_token', 'fake_token');
+  });
+  cy.intercept('GET', '**/me', {
+    statusCode: 200,
+    body: {
+      display_name: 'Usuário Teste',
+      email: 'teste@teste.com',
+      id: '123456',
+    },
+  }).as('getMe');
+
+  cy.visit('/artists');
+});
+
 Cypress.Commands.add('mockSearchTypeArtistAPI', () => {
   cy.intercept('GET', '**/search?q=Eminem&type=artist*', {
     statusCode: 200,
@@ -51,13 +69,17 @@ Cypress.Commands.add('mockSearchTypeArtistAPI', () => {
 });
 
 Cypress.Commands.add('mockSearchTypeAlbumAPI', () => {
-  cy.intercept('GET', '**/search?q=Eminem&type=album*', {
+  cy.intercept('GET', '**/search?q=Eminem&type=album**', {
     statusCode: 200,
     body: {
       albums: {
+        href: 'https://api.spotify.com/v1/search?query=Eminem&type=album',
+        total: 2,
+        limit: 20,
+        offset: 0,
         items: [
-          { id: '1', name: 'Album One', images: [{ url: 'img1.jpg' }] },
-          { id: '2', name: 'Album Two', images: [{ url: 'img2.jpg' }] },
+          { id: '1', name: 'Album One', images: [{ url: 'img1.jpg' }], release_date: '2020-01-01', total_tracks: 10 },
+          { id: '2', name: 'Album Two', images: [{ url: 'img2.jpg' }], release_date: '2020-01-01', total_tracks: 10 },
         ],
       },
     },
@@ -127,7 +149,7 @@ Cypress.Commands.add('mockArtistsIdAlbumsAPI', () => {
 });
 
 Cypress.Commands.add('mockAlbumsIdAPI', () => {
-  cy.intercept('GET', '**/albums/1', {
+  cy.intercept('GET', '**/albums/1**', {
     statusCode: 200,
     body: {
       name: 'Album One',
@@ -159,5 +181,35 @@ Cypress.Commands.add('mockAlbumsIdAPI', () => {
       release_date: '2021-01-20',
       total_tracks: 2,
     },
-  });
+  }).as('albumsId');
+});
+
+Cypress.Commands.add('mockAlbumsIdTracksAPI', () => {
+  cy.intercept('GET', '**/albums/1/tracks?*', {
+    statusCode: 200,
+    body: {
+      items: [
+        {
+          id: '1',
+          name: 'Track One',
+          album: {
+            name: 'Album One',
+            images: [{ url: 'img1.jpg' }],
+          },
+          artists: [{ name: 'Artist One' }],
+          duration_ms: 123456,
+        },
+        {
+          id: '2',
+          name: 'Track Two',
+          album: {
+            name: 'Album Two',
+            images: [{ url: 'img2.jpg' }],
+          },
+          artists: [{ name: 'Artist Two' }],
+          duration_ms: 654321,
+        },
+      ],
+    },
+  }).as('albumsIdTracks');
 });

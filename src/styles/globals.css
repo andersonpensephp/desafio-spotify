@@ -122,5 +122,9 @@
 
 /* Padding-top para não sobrepor o header fixo */
 body {
-  padding-top: 70px !important;
+  padding-top: 80px !important;
+
+  @media (max-width: 768px) {
+    padding-top: 70px !important;
+  }
 }

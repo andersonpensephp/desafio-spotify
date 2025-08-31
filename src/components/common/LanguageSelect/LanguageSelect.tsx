@@ -20,8 +20,8 @@ export default function LanguageSelect() {
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="en-US">EN</SelectItem>
-        <SelectItem value="pt-BR">PT</SelectItem>
+        <SelectItem value="en-US">English(US)</SelectItem>
+        <SelectItem value="pt-BR">Português(BR)</SelectItem>
       </SelectContent>
     </Select>
   );

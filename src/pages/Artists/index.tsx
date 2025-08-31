@@ -1,21 +1,20 @@
-import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-
 import { useCallback, useContext, useEffect, useMemo } from 'react';
-
 import { ErrorState } from '@/components/common/ErrorState/ErrorState';
 import { PaginationComponent } from '@/components/common/Pagination/Pagination';
+import EmptySearchAlert from '@/components/common/EmptySearchAlert/EmptySearchAlert';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ArtistsItem } from './components/ArtistsItem/ArtistsItem';
+import { AlbumsItem } from './components/AlbumsItem/AlbumsItem';
 import type { Artist, SimplifiedAlbum } from '@/types/spotify';
-
-import { getArtistAlbumsByQuery, getArtists } from '../../api/spotify';
+import ArtistsAlbumsListSkeleton from './Skeleton/ArtistsAlbumsListSkeleton';
 import { SearchContext } from '../../context/SearchContext';
 import { useDebounce } from '../../hooks/useDebounce';
-import ArtistsAlbumsListSkeleton from './Skeleton/ArtistsAlbumsListSkeleton';
-import { AlbumsItem } from './components/AlbumsItem/AlbumsItem';
-import { ArtistsItem } from './components/ArtistsItem/ArtistsItem';
 import { useTranslation } from 'react-i18next';
+import { MagnifyingGlassIcon } from '@phosphor-icons/react';
+import { useArtistsQuery } from '../../hooks/spotify/useArtistsQuery';
+import { useAlbumsQuery } from '../../hooks/spotify/useAlbumsQuery';
 
 const limit = import.meta.env.VITE_LIMIT_PER_PAGE;
 
@@ -32,18 +31,11 @@ export default function Artists() {
     data: artistsData,
     isFetching: isArtistsFetching,
     error: artistsError,
-    refetch: refetchArtists,
-  } = useQuery({
-    queryKey: ['artists', debounceSearch, pageArtists],
-    queryFn: () => getArtists(debounceSearch, limit, pageArtists * limit),
-    enabled: !!debounceSearch,
-    refetchOnWindowFocus: false,
-    placeholderData: (previousData) => previousData,
-    gcTime: 10 * 60 * 1000,
-    staleTime: 5 * 60 * 1000,
-    retry: 2,
-    retryDelay: 1000,
-    throwOnError: true,
+    refetch: refetchArtists
+  } = useArtistsQuery({
+    debounceSearch,
+    pageArtists,
+    limit,
   });
 
   // Query de albuns
@@ -51,18 +43,12 @@ export default function Artists() {
     data: albumsData,
     isFetching: isAlbumsFetching,
     error: albumsError,
-    refetch: refetchAlbums,
-  } = useQuery({
-    queryKey: ['albums', debounceSearch, pageAlbums],
-    queryFn: () => getArtistAlbumsByQuery(debounceSearch, limit, pageAlbums * limit),
-    enabled: !!debounceSearch,
-    refetchOnWindowFocus: false,
-    placeholderData: (previousData) => previousData,
-    staleTime: 10 * 60 * 1000,
-    gcTime: 5 * 60 * 1000,
-    retry: 2,
-    retryDelay: 1000,
-    throwOnError: true,
+    refetch: refetchAlbums
+  } = useAlbumsQuery({
+    debounceSearch,
+    pageAlbums,
+    limit,
+    enabled: tab === 'albums',
   });
 
   const handleSearch = useCallback(
@@ -82,9 +68,14 @@ export default function Artists() {
   };
 
   useEffect(() => {
-    setPageArtists(0);
-    setPageAlbums(0);
-  }, [debounceSearch, setPageArtists, setPageAlbums]);
+    if (!debounceSearch) {
+      setPageArtists(0);
+      setPageAlbums(0);
+
+      refetchArtists();
+      refetchAlbums();
+    }
+  }, [debounceSearch, setPageArtists, setPageAlbums, refetchArtists, refetchAlbums]);
 
   useEffect(() => {
     if (tab === 'artists') {
@@ -103,7 +94,11 @@ export default function Artists() {
   return (
     <div className="p-6">
       <div className="flex w-full justify-center gap-2 mb-6">
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-md relative">
+          <MagnifyingGlassIcon
+            size={20}
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground"
+          />
           <Input
             type="text"
             placeholder={`${t('search')} ${tab === 'artists' ? t('artist') : t('albums')}`}
@@ -113,95 +108,104 @@ export default function Artists() {
         </div>
       </div>
 
-      <Tabs
-        defaultValue={tab}
-        onValueChange={(value) => {
-          setTab(value);
-        }}
-      >
-        <div className="flex items-center gap-6 mb-6">
-          <TabsList>
-            <TabsTrigger className="cursor-pointer" value="artists">
-              {t('artists')}
-            </TabsTrigger>
-            <TabsTrigger className="cursor-pointer" value="albums">
-              {t('albums')}
-            </TabsTrigger>
-          </TabsList>
+      {artistsData?.artists?.items?.length === 0 ? (
+        <div className="max-w-md mx-auto pt-6">
+          <EmptySearchAlert
+            title={t('noSearchTitle')}
+            message={t('noSearchMessage')}
+          />
         </div>
+      ) : (
+        <Tabs
+          defaultValue={tab}
+          onValueChange={(value) => {
+            setTab(value);
+          }}
+        >
+          <div className="flex items-center gap-6 mb-6">
+            <TabsList>
+              <TabsTrigger className="cursor-pointer" value="artists">
+                {t('artists')}
+              </TabsTrigger>
+              <TabsTrigger className="cursor-pointer" value="albums">
+                {t('albums')}
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
-        {/* Tab Artists */}
-        <TabsContent value="artists">
-          <h2 className="text-2xl font-bold pb-4">{t('artists')}</h2>
-          {artistsError && (
-            <ErrorState
-              message={artistsError?.message || 'Erro ao buscar artistas'}
-              onRetry={handleRetry}
-            />
-          )}
-          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full justify-between">
-            {isArtistsFetching ? (
-              <ArtistsAlbumsListSkeleton />
-            ) : (
-              artistsData?.artists?.items?.map((artist: Artist) => (
-                <motion.div
-                  key={artist.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <ArtistsItem artist={artist} />
-                </motion.div>
-              ))
+          {/* Tab Artists */}
+          <TabsContent value="artists">
+            <h2 className="text-2xl font-bold pb-4">{t('artists')}</h2>
+            {artistsError && (
+              <ErrorState
+                message={artistsError?.message || 'Erro ao buscar artistas'}
+                onRetry={handleRetry}
+              />
             )}
-          </ul>
+            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full justify-between">
+              {isArtistsFetching ? (
+                <ArtistsAlbumsListSkeleton />
+              ) : (
+                artistsData?.artists?.items?.map((artist: Artist) => (
+                  <motion.div
+                    key={artist.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <ArtistsItem artist={artist} />
+                  </motion.div>
+                ))
+              )}
+            </ul>
 
-          {totalArtistsPages > 1 && (
-            <PaginationComponent
-              totalPages={totalArtistsPages}
-              page={pageArtists}
-              setPage={setPageArtists}
-            />
-          )}
-        </TabsContent>
-
-        {/* Tab Albums */}
-        <TabsContent value="albums">
-          <h2 className="text-2xl font-bold pb-4">{t('albums')}</h2>
-          {albumsError && (
-            <ErrorState
-              message={albumsError?.message || 'Erro ao buscar albuns'}
-              onRetry={handleRetry}
-            />
-          )}
-          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full justify-between">
-            {isAlbumsFetching ? (
-              <ArtistsAlbumsListSkeleton />
-            ) : (
-              albumsData?.albums?.items?.map((album: SimplifiedAlbum) => (
-                <motion.div
-                  key={album.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <AlbumsItem album={album} />
-                </motion.div>
-              ))
+            {totalArtistsPages > 1 && (
+              <PaginationComponent
+                totalPages={totalArtistsPages}
+                page={pageArtists}
+                setPage={setPageArtists}
+              />
             )}
-          </ul>
+          </TabsContent>
 
-          {totalAlbumsPages > 1 && (
-            <PaginationComponent
-              totalPages={totalAlbumsPages}
-              page={pageAlbums}
-              setPage={setPageAlbums}
-            />
-          )}
-        </TabsContent>
-      </Tabs>
+          {/* Tab Albums */}
+          <TabsContent value="albums">
+            <h2 className="text-2xl font-bold pb-4">{t('albums')}</h2>
+            {albumsError && (
+              <ErrorState
+                message={albumsError?.message || 'Erro ao buscar albuns'}
+                onRetry={handleRetry}
+              />
+            )}
+            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full justify-between">
+              {isAlbumsFetching ? (
+                <ArtistsAlbumsListSkeleton />
+              ) : (
+                albumsData?.albums?.items?.map((album: SimplifiedAlbum) => (
+                  <motion.div
+                    key={album.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <AlbumsItem album={album} />
+                  </motion.div>
+                ))
+              )}
+            </ul>
+
+            {totalAlbumsPages > 1 && (
+              <PaginationComponent
+                totalPages={totalAlbumsPages}
+                page={pageAlbums}
+                setPage={setPageAlbums}
+              />
+            )}
+          </TabsContent>
+        </Tabs>
+      )}
     </div>
   );
 }

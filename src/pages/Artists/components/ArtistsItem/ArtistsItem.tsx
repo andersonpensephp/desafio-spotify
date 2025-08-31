@@ -21,7 +21,15 @@ export const ArtistsItem = memo(({ artist }: ArtistsItemProps) => {
       <Card
         className="w-full h-64 shadow-md hover:shadow-xl transition-shadow cursor-pointer"
         onClick={() => {
-          navigate(`/artist/${artist.id}`);
+          navigate(
+            `/artist/${artist.id}`,
+            {
+              state: {
+                from: location.pathname + location.search,
+                breadcrumbLabel: 'artists'
+              }
+            }
+          );
         }}
       >
         <CardContent className="flex flex-col items-center p-4 gap-2">
