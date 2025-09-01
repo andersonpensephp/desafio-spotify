@@ -77,6 +77,7 @@ O projeto está publicado na Vercel:
 - ESLint  
 - Prettier  
 - Vitest 
+- Cypress
 
 ---
 ## 📂 Estrutura do Projeto
@@ -84,11 +85,13 @@ O projeto está publicado na Vercel:
 
 ```bash
 src/
+├── api/           # API do Spotify
 ├── assets/        # Arquivos estáticos (imagens, ícones, etc.)
 ├── components/    # Componentes reutilizáveis
 │   ├── common/    # Componentes comuns (botões, inputs, etc.)
 │   └── ui/        # Componentes de UI estilizados
 ├── context/       # Contextos do React
+├── enum/          # Enumeradores
 ├── hooks/         # Custom hooks
 ├── i18n/          # Configuração de internacionalização
 ├── libs/          # Bibliotecas e utilitários
@@ -100,6 +103,7 @@ src/
 │   └── Home/      # Página inicial
 ├── routes/        # Rotas da aplicação
 ├── styles/        # Estilos globais e temas
+├── types/         # Tipos do Spotify
 ├── utils/         # Funções utilitárias
 └── layouts/       # Layouts da aplicação
 ```
@@ -129,7 +133,7 @@ npm install
 yarn
 
 # Crie na raiz do projeto, para adicionar as envs
-.env
+.env ou .env.development
 
 # Inicie o servidor de desenvolvimento
 npm run dev
