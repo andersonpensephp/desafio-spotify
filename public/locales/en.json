@@ -17,6 +17,9 @@
   "back": "Back",
   "erros": {
     "errorAlbum": "Error fetching album",
-    "errorTracks": "Error fetching tracks"
+    "errorTracks": "Error fetching tracks",
+    "retry": "Retry",
+    "ops": "Ops! Something went wrong",
+    "tryAgain": "Try again later"
   }
 }

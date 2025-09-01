@@ -17,6 +17,9 @@
   "back": "Voltar",
   "erros": {
     "errorAlbum": "Erro ao buscar album",
-    "errorTracks": "Erro ao buscar faixas"
+    "errorTracks": "Erro ao buscar faixas",
+    "retry": "Tentar novamente",
+    "ops": "Ops! Algo deu errado",
+    "tryAgain": "Tente novamente mais tarde"
   }
 }
