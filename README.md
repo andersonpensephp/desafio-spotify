@@ -171,13 +171,9 @@ yarn cy:open
 ```
 🚀 Deploy
 
-```bash
-npm run build
-npm run deploy
-# ou
-yarn build
-yarn deploy
-```
+O deploy é feito na Vercel, após merge com a master:  
+
+[https://desafio-spotify.vercel.app](https://desafio-spotify.vercel.app)
 
 👤 Autor
 
