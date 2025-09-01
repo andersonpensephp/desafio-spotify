@@ -6,6 +6,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useTranslation } from "react-i18next";
+import { LanguageSelectEnum } from "@/enum/languageSelectEnum";
 
 export default function LanguageSelect() {
   const { i18n } = useTranslation();
@@ -20,8 +21,11 @@ export default function LanguageSelect() {
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="en-US">English(US)</SelectItem>
-        <SelectItem value="pt-BR">Português(BR)</SelectItem>
+        {LanguageSelectEnum.map((language) => (
+          <SelectItem key={language.value} value={language.value}>
+            {language.label}
+          </SelectItem>
+        ))}
       </SelectContent>
     </Select>
   );
