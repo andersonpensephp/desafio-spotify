@@ -2,6 +2,19 @@ import { describe, expect, it, vi } from 'vitest';
 import { render } from '@testing-library/react';
 import { ErrorState } from './ErrorState';
 
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => {
+      const translation = {
+        'ops': 'Ops! Algo deu errado',
+        'retry': 'Tentar novamente',
+        'tryAgain': 'Tente novamente mais tarde'
+      };
+      return translation[key as keyof typeof translation];
+    },
+  }),
+}));
+
 describe('ErrorState', () => {
   it('should render the error state', () => {
     const message = 'Error na busca de artistas';
