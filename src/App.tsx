@@ -13,15 +13,15 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <I18nextProvider i18n={i18next}>
-      <ErrorBoundary>
-        <SearchContextProvider>
-          <BrowserRouter>
-            <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+          <SearchContextProvider>
+            <ErrorBoundary>
               <AppRoutes />
-            </QueryClientProvider>
-          </BrowserRouter>
-        </SearchContextProvider>
-      </ErrorBoundary>
+            </ErrorBoundary>
+          </SearchContextProvider>
+        </QueryClientProvider>
+      </BrowserRouter>
     </I18nextProvider>
   );
 }
