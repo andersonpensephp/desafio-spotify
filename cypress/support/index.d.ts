@@ -8,5 +8,6 @@ declare namespace Cypress {
     mockAlbumsIdAPI(): Chainable<void>;
     fakeSpotifyLogin(): Chainable<void>;
     mockAlbumsIdTracksAPI(): Chainable<void>;
+    mockSearchTypeArtistAPIEmpty(): Chainable<void>;
   }
 }

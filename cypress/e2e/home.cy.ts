@@ -1,4 +1,7 @@
 
+
+/// <reference types="cypress" />
+
 describe('Home', () => {
   beforeEach(() => {
     cy.clearLocalStorage();
