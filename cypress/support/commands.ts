@@ -213,3 +213,14 @@ Cypress.Commands.add('mockAlbumsIdTracksAPI', () => {
     },
   }).as('albumsIdTracks');
 });
+
+Cypress.Commands.add('mockSearchTypeArtistAPIEmpty', () => {
+  cy.intercept('GET', '**/search?q=Eminem&type=artist*', {
+    statusCode: 200,
+    body: {
+      artists: {
+        items: [],
+      },
+    },
+  }).as('searchArtists');
+});

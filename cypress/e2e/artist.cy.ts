@@ -1,3 +1,6 @@
+
+/// <reference types="cypress" />
+
 describe('Artist', () => {
   beforeEach(() => {
     cy.mockArtistsIdAPI();
